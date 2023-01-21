@@ -1,12 +1,14 @@
 import { Routes, Route } from "react-router-dom";
 
+import MainLayout from "./layouts/MainLayout";
+
 export default function App() {
   return (
-    <div>
+    <MainLayout>
       <Routes>
         <Route path="*" element={<NoMatch />} />
       </Routes>
-    </div>
+    </MainLayout>
   );
 }
 

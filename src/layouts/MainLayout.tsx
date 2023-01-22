@@ -1,12 +1,18 @@
 import * as React from "react";
 
-import { ReactComponent as SettingsIcon } from "assets/svg/settings.svg";
 import { ReactComponent as BellIcon } from "assets/svg/bell.svg";
+import { ReactComponent as SettingsIcon } from "assets/svg/settings.svg";
+
+import WalletLogin from "utils/WalletLogin";
 
 export default function MainLayout({
   children,
+  handleModalOpen,
+  handleModalClose,
 }: {
   children: React.ReactNode;
+  handleModalOpen: () => void;
+  handleModalClose: () => void;
 }) {
   const [selectedPage, setSelectedPage] = React.useState("Home");
   const pages = [
@@ -48,6 +54,7 @@ export default function MainLayout({
         <div className="flex flex-col gap-6">
           {pages.map((page) => (
             <div
+              key={page.name}
               className={
                 "flex flex-row h-12 gap-2 mx-6 px-3 hover:cursor-pointer rounded-3xl font-medium transition-all duration-300" +
                 (selectedPage === page.name
@@ -90,9 +97,8 @@ export default function MainLayout({
               <BellIcon height={25} width={25} />
             </div>
             <div>
-              <button className="rounded-full border py-2 px-5 font-medium hover:bg-indigo-700 hover:text-white">
-                Login
-              </button>
+              {/* <Button text="Login" onClick={() => handleModalOpen()} /> */}
+              <WalletLogin handleModalClose={handleModalClose} />
             </div>
           </div>
         </div>

@@ -1,7 +1,11 @@
 import * as React from "react";
 
+import { useNavigate } from "react-router-dom";
+
 import { ReactComponent as BellIcon } from "assets/svg/bell.svg";
 import { ReactComponent as SettingsIcon } from "assets/svg/settings.svg";
+
+import PageLayout from "layouts/PageLayout";
 
 import WalletLogin from "utils/WalletLogin";
 
@@ -15,6 +19,8 @@ export default function MainLayout({
   handleModalClose: () => void;
 }) {
   const [selectedPage, setSelectedPage] = React.useState("Home");
+  const navigate = useNavigate();
+
   const pages = [
     { name: "Home", icon: SettingsIcon, href: "/" },
     {
@@ -39,8 +45,9 @@ export default function MainLayout({
     },
   ];
 
-  const handlePageClick = (page: string) => {
+  const handlePageClick = (page: string, href: string) => {
     setSelectedPage(page);
+    navigate(href);
   };
 
   return (
@@ -61,7 +68,7 @@ export default function MainLayout({
                   ? " bg-indigo-700 text-white"
                   : " hover:bg-slate-300")
               }
-              onClick={() => handlePageClick(page.name)}
+              onClick={() => handlePageClick(page.name, page.href)}
             >
               <div className="flex items-center">
                 {
@@ -81,12 +88,12 @@ export default function MainLayout({
           ))}
         </div>
       </div>
-      <div className="flex flex-col grow gap-6 bg-white">
+      <div className="flex flex-col grow gap-1 bg-white">
         <div className="flex flex-row justify-between m-8">
           <div className="">
             <div>
               <input
-                className="rounded-full pl-4 h-8 w-96 bg-gray-100"
+                className="rounded-full pl-4 h-10 w-96 bg-gray-100"
                 type="text"
                 placeholder="Search"
               />
@@ -102,7 +109,7 @@ export default function MainLayout({
             </div>
           </div>
         </div>
-        <div className="">{children}</div>
+        <PageLayout pageName={selectedPage}>{children}</PageLayout>
       </div>
     </div>
   );

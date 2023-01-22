@@ -27,6 +27,18 @@
       "components/*": [
         "components/*",
       ],
+      "layouts/*": [
+        "layouts/*",
+      ],
+      "pages/*": [
+        "pages/*",
+      ],
+      "utils/*": [
+        "utils/*",
+      ],
+      "types/*": [
+        "types/*",
+      ],
     }
   },
   "include": [

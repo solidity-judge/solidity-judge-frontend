@@ -8,6 +8,8 @@ import { ReactComponent as SettingsIcon } from "assets/svg/settings.svg";
 import PageLayout from "layouts/PageLayout";
 
 import WalletLogin from "utils/WalletLogin";
+import { useAppSelector, useAppDispatch } from "redux/hooks";
+import { setSelectedPage } from "redux/slices/selectedPage";
 
 export default function MainLayout({
   children,
@@ -18,35 +20,50 @@ export default function MainLayout({
   handleModalOpen: () => void;
   handleModalClose: () => void;
 }) {
-  const [selectedPage, setSelectedPage] = React.useState("Home");
+  const selectedPage = useAppSelector((state) => state.selectedPage);
+  const lastProblem = useAppSelector((state) => state.lastProblem);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const pages = [
-    { name: "Home", icon: SettingsIcon, href: "/" },
+    { id: "home", name: "Home", icon: SettingsIcon, href: "/" },
     {
+      id: "problems",
       name: "Problems",
       icon: SettingsIcon,
       href: "/problems",
     },
     {
+      id: "contests",
       name: "Contests",
       icon: SettingsIcon,
       href: "/contests",
     },
     {
+      id: "messages",
       name: "Messages",
       icon: SettingsIcon,
       href: "/messages",
     },
     {
+      id: "settings",
       name: "Settings",
       icon: SettingsIcon,
       href: "/settings",
     },
   ];
 
-  const handlePageClick = (page: string, href: string) => {
-    setSelectedPage(page);
+  const extraPages = [
+    { id: "editor", name: "Editor", icon: SettingsIcon, href: "/editor" },
+  ];
+
+  const handlePageClick = (id: string, page: string, href: string) => {
+    dispatch(
+      setSelectedPage({
+        id: id,
+        name: page,
+      })
+    );
     navigate(href);
   };
 
@@ -58,17 +75,17 @@ export default function MainLayout({
             <span className="font-bold text-lg">SOLIDITY JUDGE</span>
           </div>
         </div>
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 px-6">
           {pages.map((page) => (
             <div
               key={page.name}
               className={
-                "flex flex-row h-12 gap-2 mx-6 px-3 hover:cursor-pointer rounded-3xl font-medium transition-all duration-300" +
-                (selectedPage === page.name
+                "flex flex-row h-12 gap-2 px-3 hover:cursor-pointer rounded-3xl font-medium transition-all duration-300" +
+                (selectedPage.id === page.id
                   ? " bg-indigo-700 text-white"
                   : " hover:bg-slate-300")
               }
-              onClick={() => handlePageClick(page.name, page.href)}
+              onClick={() => handlePageClick(page.id, page.name, page.href)}
             >
               <div className="flex items-center">
                 {
@@ -76,7 +93,7 @@ export default function MainLayout({
                     height={30}
                     width={30}
                     className={
-                      selectedPage === page.name ? "[&>path]:stroke-white" : ""
+                      selectedPage.id === page.id ? "[&>path]:stroke-white" : ""
                     }
                   />
                 }
@@ -86,6 +103,39 @@ export default function MainLayout({
               </div>
             </div>
           ))}
+          <div className="border-b border-gray-400"></div>
+          {lastProblem.id &&
+            [{ icon: SettingsIcon, ...lastProblem }, ...extraPages].map(
+              (page) => (
+                <div
+                  key={page.name}
+                  className={
+                    "flex flex-row h-12 gap-2 px-3 hover:cursor-pointer rounded-3xl font-medium transition-all duration-300" +
+                    (selectedPage.id === page.id
+                      ? " bg-indigo-700 text-white"
+                      : " hover:bg-slate-300")
+                  }
+                  onClick={() => handlePageClick(page.id, page.name, page.href)}
+                >
+                  <div className="flex items-center">
+                    {
+                      <page.icon
+                        height={30}
+                        width={30}
+                        className={
+                          selectedPage.id === page.id
+                            ? "[&>path]:stroke-white"
+                            : ""
+                        }
+                      />
+                    }
+                  </div>
+                  <div className="flex items-center">
+                    <span>{page.name}</span>
+                  </div>
+                </div>
+              )
+            )}
         </div>
       </div>
       <div className="flex flex-col grow gap-1 bg-white">
@@ -109,7 +159,7 @@ export default function MainLayout({
             </div>
           </div>
         </div>
-        <PageLayout pageName={selectedPage}>{children}</PageLayout>
+        <PageLayout pageName={selectedPage.name}>{children}</PageLayout>
       </div>
     </div>
   );

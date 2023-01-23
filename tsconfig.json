@@ -39,6 +39,9 @@
       "types/*": [
         "types/*",
       ],
+      "redux/*": [
+        "redux/*",
+      ],
     }
   },
   "include": [

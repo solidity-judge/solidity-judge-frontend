@@ -1,6 +1,5 @@
 import SolvedFilter from "components/Filter/SolvedFilter";
 import ProblemList from "components/Problem/ProblemList";
-import { Outlet } from "react-router-dom";
 import { Problem } from "types/Problem";
 
 export default function ProblemsPage() {
@@ -17,10 +16,6 @@ export default function ProblemsPage() {
 }
 
 const problems = [
-  {
-    id: "0A",
-    title: "A cộng B",
-  },
   {
     id: "1A",
     title: "Watermelon",

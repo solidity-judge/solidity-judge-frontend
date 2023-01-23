@@ -38,7 +38,6 @@ export default function WalletLogin({
   const [buttonText, setButtonText] = React.useState("Connect to Wallet");
 
   React.useEffect(() => {
-    console.log(wallet);
     if (wallet) {
       setButtonText(
         wallet.accounts[0].address.slice(0, 6) +

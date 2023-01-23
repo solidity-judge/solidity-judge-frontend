@@ -7,7 +7,7 @@ import { ReactComponent as SettingsIcon } from "assets/svg/settings.svg";
 
 import PageLayout from "layouts/PageLayout";
 
-import WalletLogin from "utils/WalletLogin";
+import WalletLogin from "components/Button/WalletLogin";
 import { useAppSelector, useAppDispatch } from "redux/hooks";
 import { setSelectedPage } from "redux/slices/selectedPage";
 
@@ -51,10 +51,6 @@ export default function MainLayout({
       icon: SettingsIcon,
       href: "/settings",
     },
-  ];
-
-  const extraPages = [
-    { id: "editor", name: "Editor", icon: SettingsIcon, href: "/editor" },
   ];
 
   const handlePageClick = (id: string, page: string, href: string) => {
@@ -105,37 +101,35 @@ export default function MainLayout({
           ))}
           <div className="border-b border-gray-400"></div>
           {lastProblem.id &&
-            [{ icon: SettingsIcon, ...lastProblem }, ...extraPages].map(
-              (page) => (
-                <div
-                  key={page.name}
-                  className={
-                    "flex flex-row h-12 gap-2 px-3 hover:cursor-pointer rounded-3xl font-medium transition-all duration-300" +
-                    (selectedPage.id === page.id
-                      ? " bg-indigo-700 text-white"
-                      : " hover:bg-slate-300")
+            [{ icon: SettingsIcon, ...lastProblem }].map((page) => (
+              <div
+                key={page.name}
+                className={
+                  "flex flex-row h-12 gap-2 px-3 hover:cursor-pointer rounded-3xl font-medium transition-all duration-300" +
+                  (selectedPage.id === page.id
+                    ? " bg-indigo-700 text-white"
+                    : " hover:bg-slate-300")
+                }
+                onClick={() => handlePageClick(page.id, page.name, page.href)}
+              >
+                <div className="flex items-center">
+                  {
+                    <page.icon
+                      height={30}
+                      width={30}
+                      className={
+                        selectedPage.id === page.id
+                          ? "[&>path]:stroke-white"
+                          : ""
+                      }
+                    />
                   }
-                  onClick={() => handlePageClick(page.id, page.name, page.href)}
-                >
-                  <div className="flex items-center">
-                    {
-                      <page.icon
-                        height={30}
-                        width={30}
-                        className={
-                          selectedPage.id === page.id
-                            ? "[&>path]:stroke-white"
-                            : ""
-                        }
-                      />
-                    }
-                  </div>
-                  <div className="flex items-center">
-                    <span>{page.name}</span>
-                  </div>
                 </div>
-              )
-            )}
+                <div className="flex items-center">
+                  <span>{page.name}</span>
+                </div>
+              </div>
+            ))}
         </div>
       </div>
       <div className="flex flex-col grow gap-1 bg-white">

@@ -7,4 +7,5 @@ export type ProblemDetail = {
   id: string;
   title: string;
   description: string;
+  gasLimit: number;
 };

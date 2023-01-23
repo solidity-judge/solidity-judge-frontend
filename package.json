@@ -14,9 +14,12 @@
     "@web3-onboard/core": "^2.13.1",
     "@web3-onboard/injected-wallets": "^2.6.0",
     "@web3-onboard/react": "^2.5.5",
+    "better-react-mathjax": "^2.0.2",
     "ethers": "^5.7.2",
     "react": "^18.2.0",
+    "react-ace": "^10.1.0",
     "react-dom": "^18.2.0",
+    "react-markdown": "^8.0.5",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.7.0",
     "react-scripts": "5.0.1",
@@ -48,6 +51,7 @@
     ]
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.9",
     "tailwindcss": "^3.2.4"
   }
 }

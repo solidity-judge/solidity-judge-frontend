@@ -1,12 +1,26 @@
+import { getProblems } from "api/problems";
 import SolvedFilter from "components/Filter/SolvedFilter";
 import ProblemList from "components/Problem/ProblemList";
-import { Problem } from "types/Problem";
+import { useEffect } from "react";
+
+import { useAppDispatch, useAppSelector } from "redux/hooks";
+import { setProblemList } from "redux/slices/problemList";
 
 export default function ProblemsPage() {
+  const problemList = useAppSelector((state) => state.problemList);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const response = getProblems();
+    response.then((data) => {
+      dispatch(setProblemList(data));
+    });
+  }, [dispatch]);
+
   return (
     <div className="flex flex-row grow gap-3">
       <div className="flex flex-col grow-[3]">
-        <ProblemList problems={problems} />
+        <ProblemList problemsList={problemList} />
       </div>
       <div className="flex flex-col grow max-w-sm">
         <SolvedFilter />
@@ -14,18 +28,3 @@ export default function ProblemsPage() {
     </div>
   );
 }
-
-const problems = [
-  {
-    id: "1A",
-    title: "Watermelon",
-  },
-  {
-    id: "1B",
-    title: "Excel",
-  },
-  {
-    id: "1C",
-    title: "Theatre Square",
-  },
-] as Problem[];

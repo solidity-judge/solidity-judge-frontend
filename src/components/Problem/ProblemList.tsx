@@ -1,10 +1,10 @@
-import type { Problem } from "types/Problem";
 import ProblemCard from "components/Problem/ProblemCard";
+import { ProblemPreviewList } from "types/Problem";
 
-export default function ProblemList({ problems }: { problems: Problem[] }) {
+export default function ProblemList({ problemsList }: { problemsList: ProblemPreviewList }) {
   return (
     <div className="flex flex-col gap-3">
-      {problems.map((problem) => (
+      {problemsList.problems.map((problem) => (
         <ProblemCard key={problem.id} problem={problem} />
       ))}
     </div>

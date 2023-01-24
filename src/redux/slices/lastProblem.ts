@@ -1,32 +1,30 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "redux/store";
+import { ProblemPreview } from "types/Problem";
 
-interface LastProblemState {
-  id: string;
-  name: string;
-  href: string;
-}
-
-const initialState: LastProblemState = {
-  id: "",
-  name: "",
-  href: "",
+const initialState: ProblemPreview = {
+  id: 0,
+  address: "",
+  author: "",
+  timestamp: "",
+  title: "",
 };
 
 export const lastProblemSlice = createSlice({
   name: "lastProblem",
   initialState,
   reducers: {
-    setLastProblem: (state, action: PayloadAction<LastProblemState>) => {
-      state.id = action.payload.id;
-      state.name = action.payload.name;
-      state.href = action.payload.href;
+    setLastProblem: (state, action: PayloadAction<ProblemPreview>) => {
+      return {
+        ...state,
+        ...action.payload,
+      };
     },
     removeLastProblem: (state) => {
-      state.id = "";
-      state.name = "";
-      state.href = "";
+      return {
+        ...initialState,
+      };
     },
   },
 });

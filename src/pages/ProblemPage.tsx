@@ -5,34 +5,49 @@ import { useParams } from "react-router-dom";
 import { MathJax, MathJaxContext } from "better-react-mathjax";
 
 import { useAppDispatch } from "redux/hooks";
-import { ProblemDetail } from "types/Problem";
+import { Problem } from "types/Problem";
 import { seperateNumber } from "utils/numbers";
 import { setSelectedPage } from "redux/slices/selectedPage";
 import { setLastProblem } from "redux/slices/lastProblem";
 import CodeEditor from "components/CodeEditor/CodeEditor";
 import Button from "components/Button/Button";
+import { getProblem } from "api/problems";
+
+const defaultProblem: Problem = {
+  id: 0,
+  address: "",
+  author: "",
+  timestamp: "",
+  title: "",
+  block: 0,
+  checker: "",
+  isWhitelisted: true,
+  txHash: "",
+  description: "",
+  gasLimit: 0,
+};
 
 export default function ProblemPage() {
   const [activeTab, setActiveTab] = React.useState("problem");
   const [code, setCode] = React.useState("");
+  const [problem, setProblem] = React.useState<Problem>(defaultProblem);
   const dispatch = useAppDispatch();
   const params = useParams();
-  const problemId = params.problemId;
+  const problemId = parseInt(params.problemId ? params.problemId : "0");
 
   useEffect(() => {
-    const lastProblem = {
-      id: problemId as string,
-      name: problemId as string,
-      href: `/problems/${problemId}`,
-    };
-    dispatch(
-      setSelectedPage({
-        id: problemId as string,
-        name: problemId as string,
-      })
-    );
-    dispatch(setLastProblem(lastProblem));
-  });
+    const problemDetail = getProblem(problemId);
+    problemDetail.then((data) => {
+      setProblem(data);
+      dispatch(
+        setSelectedPage({
+          id: problemId.toString(),
+          name: problemId.toString() + " - " + data.title,
+        })
+      );
+      dispatch(setLastProblem(data));
+    });
+  }, [dispatch, problemId]);
 
   const tabs = ["problem", "editor"];
 
@@ -77,7 +92,7 @@ export default function ProblemPage() {
             <div className="flex flex-row gap-3 grow">
               <div className="prose max-w-none grow-[2]">
                 <MathJax>
-                  <ReactMarkdown>{problemDetail.description}</ReactMarkdown>
+                  <ReactMarkdown>{problem.description}</ReactMarkdown>
                 </MathJax>
               </div>
               <div className="flex flex-col gap-3 grow">
@@ -86,7 +101,7 @@ export default function ProblemPage() {
                     Gas limit
                   </div>
                   <div className="text-center p-3 font-bold text-lg">
-                    {seperateNumber(problemDetail.gasLimit)}
+                    {seperateNumber(problem.gasLimit)}
                   </div>
                 </div>
               </div>
@@ -105,24 +120,3 @@ export default function ProblemPage() {
     </div>
   );
 }
-
-const problemDetail = {
-  id: "0A",
-  title: "A cộng B",
-  description: `Cho $2$ số nguyên $A$ và $B$. Hãy tính $A + B$.
-  ## Input
-  Gồm $1$ dòng chứa $2$ số nguyên $A$ và $B$ $(1 \\le A, B \\le 1000)$, cách bởi $1$ dấu cách.
-  ## Output
-  Ghi ra tổng $A + B$.
-  ## Sample Input 
-  \`\`\`
-  3 4
-  \`\`\`
-  ## Sample Output 
-  \`\`\`
-  7
-  \`\`\`
-  ## Note
-  Gợi ý: Sử dụng toán tử "+".`,
-  gasLimit: 1000000,
-} as ProblemDetail;

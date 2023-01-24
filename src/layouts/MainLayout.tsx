@@ -100,17 +100,25 @@ export default function MainLayout({
             </div>
           ))}
           <div className="border-b border-gray-400"></div>
-          {lastProblem.id &&
-            [{ icon: SettingsIcon, ...lastProblem }].map((page) => (
+          {lastProblem.id > 0 &&
+            [
+              { icon: SettingsIcon, name: lastProblem.title, ...lastProblem },
+            ].map((page) => (
               <div
                 key={page.name}
                 className={
                   "flex flex-row h-12 gap-2 px-3 hover:cursor-pointer rounded-3xl font-medium transition-all duration-300" +
-                  (selectedPage.id === page.id
+                  (selectedPage.id === page.id.toString()
                     ? " bg-indigo-700 text-white"
                     : " hover:bg-slate-300")
                 }
-                onClick={() => handlePageClick(page.id, page.name, page.href)}
+                onClick={() =>
+                  handlePageClick(
+                    page.id.toString(),
+                    page.name,
+                    "/problems/" + page.id
+                  )
+                }
               >
                 <div className="flex items-center">
                   {
@@ -118,7 +126,7 @@ export default function MainLayout({
                       height={30}
                       width={30}
                       className={
-                        selectedPage.id === page.id
+                        selectedPage.id === page.id.toString()
                           ? "[&>path]:stroke-white"
                           : ""
                       }

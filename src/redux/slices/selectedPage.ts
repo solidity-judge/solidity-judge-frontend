@@ -11,17 +11,19 @@ const initialState: SelectedPageState = {
   name: "Home",
 };
 
-export const selectedPage = createSlice({
+export const selectedPageSlice = createSlice({
   name: "selectedPage",
   initialState,
   reducers: {
     setSelectedPage: (state, action: PayloadAction<SelectedPageState>) => {
-      state.id = action.payload.id;
-      state.name = action.payload.name;
+      return {
+        ...state,
+        ...action.payload,
+      };
     },
   },
 });
 
-export const { setSelectedPage } = selectedPage.actions;
+export const { setSelectedPage } = selectedPageSlice.actions;
 
-export default selectedPage.reducer;
+export default selectedPageSlice.reducer;

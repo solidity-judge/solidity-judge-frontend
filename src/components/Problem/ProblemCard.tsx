@@ -1,29 +1,11 @@
 import { useNavigate } from "react-router-dom";
 
-import type { Problem } from "types/Problem";
+import type { ProblemPreview } from "types/Problem";
 
-import { useAppDispatch } from "redux/hooks";
-import { setSelectedPage } from "redux/slices/selectedPage";
-import { setLastProblem } from "redux/slices/lastProblem";
-
-export default function ProblemCard({ problem }: { problem: Problem }) {
+export default function ProblemCard({ problem }: { problem: ProblemPreview }) {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
   const handleClick = () => {
-    dispatch(
-      setLastProblem({
-        id: problem.id,
-        name: problem.title,
-        href: `/problems/${problem.id}`,
-      })
-    );
-    dispatch(
-      setSelectedPage({
-        id: problem.id,
-        name: problem.id + " - " + problem.title,
-      })
-    );
     navigate(`/problems/${problem.id}`);
   };
 

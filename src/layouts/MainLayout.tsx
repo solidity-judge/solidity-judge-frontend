@@ -65,7 +65,7 @@ export default function MainLayout({
 
   return (
     <div className="bg-slate-500 flex flex-row h-screen">
-      <div className="bg-white w-64 border-r-2 border-gray-200">
+      <div className="fixed h-screen bg-white w-64 border-r-2 border-gray-200">
         <div className="flex flex-row justify-center h-24">
           <div className="flex items-center">
             <span className="font-bold text-lg">SOLIDITY JUDGE</span>
@@ -132,7 +132,7 @@ export default function MainLayout({
             ))}
         </div>
       </div>
-      <div className="flex flex-col grow gap-1 bg-white">
+      <div className="ml-64 flex flex-col grow gap-1 bg-white">
         <div className="flex flex-row justify-between m-8">
           <div className="">
             <div>

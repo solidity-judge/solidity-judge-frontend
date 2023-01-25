@@ -45,7 +45,12 @@ export default function ProblemPage() {
           name: problemId.toString() + " - " + data.title,
         })
       );
-      dispatch(setLastProblem(data));
+      dispatch(
+        setLastProblem({
+          ...data,
+          title: data.id + " - " + data.title,
+        })
+      );
     });
   }, [dispatch, problemId]);
 

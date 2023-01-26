@@ -2947,7 +2947,7 @@
 
 "@solidity-judge/sdk@https://github.com/solidity-judge/contract.git#release":
   version "1.0.0"
-  resolved "https://github.com/solidity-judge/contract.git#9232458661fc00b319182a20039a52d3b5cc737d"
+  resolved "https://github.com/solidity-judge/contract.git#edcaaf4f36b507e1b1d38a2e27102ed90de73431"
   dependencies:
     "@nomicfoundation/hardhat-network-helpers" "^1.0.7"
     "@nomiclabs/hardhat-ethers" "^2.0.5"

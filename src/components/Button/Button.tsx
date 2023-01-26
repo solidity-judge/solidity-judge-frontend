@@ -5,12 +5,14 @@ export default function Button({
   fullWidth,
   className,
   hoverText,
+  disabled = false,
   onClick,
 }: {
   text: string;
   fullWidth?: boolean;
   className?: string;
   hoverText?: string;
+  disabled?: boolean;
   onClick: () => void;
 }) {
   const [buttonText, setButtonText] = React.useState(text);
@@ -29,6 +31,7 @@ export default function Button({
       onClick={() => onClick()}
       onMouseEnter={() => hoverText && setButtonText(hoverText)}
       onMouseLeave={() => hoverText && setButtonText(text)}
+      disabled={disabled}
     >
       {buttonText}
     </button>

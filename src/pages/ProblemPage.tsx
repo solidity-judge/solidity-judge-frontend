@@ -18,6 +18,7 @@ import Switch from "components/Switch/Switch";
 import Input from "components/Input/Input";
 import { useConnectWallet } from "@web3-onboard/react";
 import { ethers } from "ethers";
+import WalletLogin from "components/Button/WalletLogin";
 
 const defaultProblem: Problem = {
   id: 0,
@@ -69,7 +70,7 @@ export default function ProblemPage() {
       name: "Test",
       component: TestPanel({ problem, code }),
     },
-    { id: "submit", name: "Submit", component: SubmitPanel({ problem }) },
+    { id: "submit", name: "Submit", component: SubmitPanel({ problem, code }) },
   ];
 
   return (
@@ -198,19 +199,56 @@ function TestPanel({ problem, code }: { problem: Problem; code: string }) {
           </div>
         ))}
       </div>
-      <Button text="Submit" fullWidth={true} onClick={handleSubmit} />
+      {wallet ? (
+        <Button
+          text="Run"
+          fullWidth={true}
+          onClick={handleSubmit}
+          disabled={true}
+        />
+      ) : (
+        <WalletLogin />
+      )}
     </div>
   );
 }
 
-function SubmitPanel({ problem }: { problem: Problem }) {
-  const handleSubmit = () => {
-    console.log("submit");
+function SubmitPanel({ code, problem }: { problem: Problem; code: string }) {
+  const [{ wallet }] = useConnectWallet();
+  const handleSubmit = async () => {
+    if (!wallet) return;
+    const ethersProvider = new ethers.providers.Web3Provider(
+      wallet.provider,
+      "any"
+    );
+
+    const signer = ethersProvider.getSigner();
+    const userAddress = await signer.getAddress();
+
+    compileCode(code).then((data) => {
+      const sdk = new ProblemSDK(
+        {
+          inputFormat: problem.inputFormat,
+          outputFormat: problem.outputFormat,
+          problem: problem.address,
+        },
+        userAddress,
+        signer
+      );
+
+      sdk.submitSolution(data.bytecode).then((result) => {
+        console.log(result);
+      });
+    });
   };
 
   return (
     <div className="flex flex-col gap-3 py-2">
-      <Button text="Submit" fullWidth={true} onClick={handleSubmit} />
+      {wallet ? (
+        <Button text="Submit" fullWidth={true} onClick={handleSubmit} />
+      ) : (
+        <WalletLogin />
+      )}
     </div>
   );
 }

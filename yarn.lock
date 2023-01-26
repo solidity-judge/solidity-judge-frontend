@@ -7,6 +7,11 @@
   resolved "https://registry.yarnpkg.com/@adobe/css-tools/-/css-tools-4.1.0.tgz#417fef4a143f4396ad0b3b4351fee21323f15aa8"
   integrity sha512-mMVJ/j/GbZ/De4ZHWbQAQO1J6iVnjtZLc9WEdkUQb8S/Bu2cAF2bETXUgMAdvMG3/ngtKmcNBe+Zms9bg6jnQQ==
 
+"@agnostico/browser-solidity-compiler@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@agnostico/browser-solidity-compiler/-/browser-solidity-compiler-0.1.1.tgz#5e118d786f0cdd4170887862d159a40f7dd1ead6"
+  integrity sha512-+h5pbUrO1PPz8K4YPc25tqYzC5RbHaF7GVrvq7+FeH9JCsYno1CHQeneab3zje4dtrfHNCJpzCRCfJuee49Gww==
+
 "@ampproject/remapping@^2.1.0":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@ampproject/remapping/-/remapping-2.2.0.tgz#56c133824780de3174aed5ab6834f3026790154d"
@@ -2947,36 +2952,11 @@
 
 "@solidity-judge/sdk@https://github.com/solidity-judge/contract.git#release":
   version "1.0.0"
-  resolved "https://github.com/solidity-judge/contract.git#196356708420e26d25bcec98656310dcdca0bc1f"
+  resolved "https://github.com/solidity-judge/contract.git#3d21cc007e120a8a798b26d05091c524974532e7"
   dependencies:
-    "@nomicfoundation/hardhat-network-helpers" "^1.0.7"
-    "@nomiclabs/hardhat-ethers" "^2.0.5"
-    "@nomiclabs/hardhat-etherscan" "^2.1.8"
-    "@nomiclabs/hardhat-waffle" "^2.0.1"
-    "@openzeppelin/contracts" "4.7.3"
-    "@openzeppelin/contracts-upgradeable" "4.7.3"
-    "@typechain/ethers-v5" "^9.0.0"
-    "@typechain/hardhat" "^4.0.0"
-    "@types/mocha" "^8.2.2"
-    "@types/node" "^17.0.0"
+    "@agnostico/browser-solidity-compiler" "^0.1.1"
     bignumber.js "^9.1.1"
-    chai "^4.3.7"
-    dotenv "^16.0.3"
-    eslint "^8.30.0"
-    eslint-config-prettier "^8.5.0"
-    eslint-plugin-mocha "^10.1.0"
-    eslint-plugin-prettier "^4.2.1"
-    ethereum-waffle "^3.4.4"
-    ethereumjs-abi "^0.6.8"
-    ethereumjs-util "^7.1.5"
     ethers "^5.7.2"
-    graphql-request "^5.1.0"
-    hardhat "^2.12.4"
-    hardhat-contract-sizer "^2.6.1"
-    hardhat-gas-reporter "^1.0.9"
-    solidity-coverage "^0.8.2"
-    ts-node "^10.9.1"
-    typechain "^8.1.1"
     typescript "^4.9.4"
 
 "@solidity-parser/parser@^0.14.0", "@solidity-parser/parser@^0.14.1":

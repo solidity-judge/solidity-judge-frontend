@@ -165,7 +165,7 @@ function TestPanel({ problem, code }: { problem: Problem; code: string }) {
         {
           inputFormat: problem.inputFormat,
           outputFormat: problem.outputFormat,
-          problem: problem.address,
+          address: problem.address,
         },
         userAddress,
         signer
@@ -230,7 +230,7 @@ function SubmitPanel({ code, problem }: { problem: Problem; code: string }) {
         {
           inputFormat: problem.inputFormat,
           outputFormat: problem.outputFormat,
-          problem: problem.address,
+          address: problem.address,
         },
         userAddress,
         signer

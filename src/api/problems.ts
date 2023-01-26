@@ -16,6 +16,8 @@ export function getProblem(id: number): Promise<Problem> {
 export function compileCode(source: string): Promise<CompilerResponse> {
   return fetch(process.env.REACT_APP_BACKEND_URL + "compile", {
     method: "POST",
-    body: JSON.stringify({ source }),
+    body: new URLSearchParams({
+      source: source,
+    }),
   }).then((res) => res.json());
 }

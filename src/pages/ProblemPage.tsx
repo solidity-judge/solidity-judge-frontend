@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import { useParams } from "react-router-dom";
 import { MathJax, MathJaxContext } from "better-react-mathjax";
+
+import { ProblemSDK } from "@solidity-judge/sdk";
 
 import { useAppDispatch } from "redux/hooks";
 import { Problem } from "types/Problem";
@@ -11,7 +13,12 @@ import { setSelectedPage } from "redux/slices/selectedPage";
 import { setLastProblem } from "redux/slices/lastProblem";
 import CodeEditor from "components/CodeEditor/CodeEditor";
 import Button from "components/Button/Button";
-import { getProblem } from "api/problems";
+import { compileCode, getProblem } from "api/problems";
+import Switch from "components/Switch/Switch";
+import Input from "components/Input/Input";
+import { useConnectWallet } from "@web3-onboard/react";
+import { ethers } from "ethers";
+import WalletLogin from "components/Button/WalletLogin";
 
 const defaultProblem: Problem = {
   id: 0,
@@ -25,6 +32,8 @@ const defaultProblem: Problem = {
   txHash: "",
   description: "",
   gasLimit: 0,
+  inputFormat: [],
+  outputFormat: [],
 };
 
 export default function ProblemPage() {
@@ -55,14 +64,14 @@ export default function ProblemPage() {
   }, [dispatch, problemId]);
 
   const tabs = ["problem", "editor"];
-
-  const handleTest = () => {
-    console.log(code);
-  };
-
-  const handleSubmit = () => {
-    console.log(code);
-  };
+  const switchItems = [
+    {
+      id: "test",
+      name: "Test",
+      component: TestPanel({ problem, code }),
+    },
+    { id: "submit", name: "Submit", component: SubmitPanel({ problem, code }) },
+  ];
 
   return (
     <div className="flex grow flex-col border-t pt-3 gap-3">
@@ -113,15 +122,133 @@ export default function ProblemPage() {
             </div>
           </MathJaxContext>
         ) : (
-          <div className="flex flex-col grow gap-3">
+          <div className="flex flex-row grow gap-3">
             <CodeEditor setCode={setCode} />
-            <div className="flex flex-row gap-3 mb-3 justify-end">
-              <Button text="Test" onClick={handleTest} />
-              <Button text="Submit" onClick={handleSubmit} />
+            <div className="flex flex-col gap-3">
+              <Switch items={switchItems} />
             </div>
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+function TestPanel({ problem, code }: { problem: Problem; code: string }) {
+  const [{ wallet }] = useConnectWallet();
+  const inputs = useRef(problem.inputFormat.map(() => ""));
+  const [outputs, setOutputs] = React.useState<string[]>([]);
+
+  useEffect(() => {
+    setOutputs(problem.outputFormat);
+  }, [problem.outputFormat]);
+
+  const handleInputChange = (
+    index: number,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    inputs.current[index] = event.target.value;
+  };
+
+  const handleSubmit = async () => {
+    if (!wallet) return;
+    const ethersProvider = new ethers.providers.Web3Provider(
+      wallet.provider,
+      "any"
+    );
+
+    const signer = ethersProvider.getSigner();
+    const userAddress = await signer.getAddress();
+
+    compileCode(code).then((data) => {
+      const sdk = new ProblemSDK(
+        {
+          inputFormat: problem.inputFormat,
+          outputFormat: problem.outputFormat,
+          problem: problem.address,
+        },
+        userAddress,
+        signer
+      );
+
+      sdk.deployAndRunExample(inputs.current, data.bytecode).then((result) => {
+        setOutputs(result);
+      });
+    });
+  };
+
+  return (
+    <div className="flex flex-col gap-3 py-2">
+      <div>
+        <div className="font-medium text-center">Input</div>
+        {problem.inputFormat.map((input, index) => (
+          <div className="mb-2" key={index}>
+            <Input
+              type="text"
+              placeholder={input}
+              onChange={(e) => handleInputChange(index, e)}
+            />
+          </div>
+        ))}
+      </div>
+      <div>
+        <div className="font-medium text-center">Output</div>
+        {outputs.map((output, index) => (
+          <div className="mb-2" key={index}>
+            <Input type="text" placeholder={output} disabled={true} />
+          </div>
+        ))}
+      </div>
+      {wallet ? (
+        <Button
+          text="Run"
+          fullWidth={true}
+          onClick={handleSubmit}
+          disabled={true}
+        />
+      ) : (
+        <WalletLogin />
+      )}
+    </div>
+  );
+}
+
+function SubmitPanel({ code, problem }: { problem: Problem; code: string }) {
+  const [{ wallet }] = useConnectWallet();
+  const handleSubmit = async () => {
+    if (!wallet) return;
+    const ethersProvider = new ethers.providers.Web3Provider(
+      wallet.provider,
+      "any"
+    );
+
+    const signer = ethersProvider.getSigner();
+    const userAddress = await signer.getAddress();
+
+    compileCode(code).then((data) => {
+      const sdk = new ProblemSDK(
+        {
+          inputFormat: problem.inputFormat,
+          outputFormat: problem.outputFormat,
+          problem: problem.address,
+        },
+        userAddress,
+        signer
+      );
+
+      sdk.submitSolution(data.bytecode).then((result) => {
+        console.log(result);
+      });
+    });
+  };
+
+  return (
+    <div className="flex flex-col gap-3 py-2">
+      {wallet ? (
+        <Button text="Submit" fullWidth={true} onClick={handleSubmit} />
+      ) : (
+        <WalletLogin />
+      )}
     </div>
   );
 }

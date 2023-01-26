@@ -29,11 +29,7 @@ init({
   },
 });
 
-export default function WalletLogin({
-  handleModalClose,
-}: {
-  handleModalClose: () => void;
-}) {
+export default function WalletLogin() {
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
   const [buttonText, setButtonText] = React.useState("Connect to Wallet");
 

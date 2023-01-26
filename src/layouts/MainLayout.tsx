@@ -157,7 +157,7 @@ export default function MainLayout({
             </div>
             <div>
               {/* <Button text="Login" onClick={() => handleModalOpen()} /> */}
-              <WalletLogin handleModalClose={handleModalClose} />
+              <WalletLogin />
             </div>
           </div>
         </div>

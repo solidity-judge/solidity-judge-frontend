@@ -39,7 +39,7 @@ export default function LoginModal({
         </div>
         <div className="flex flex-row mt-8">
           {selectedTab === "User" ? (
-            <WalletLogin handleModalClose={handleModalClose} />
+            <WalletLogin />
           ) : (
             <form onSubmit={handleSubmit}>
               <div className="mb-3">

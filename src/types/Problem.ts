@@ -20,4 +20,6 @@ export type Problem = ProblemPreview & {
   txHash: string;
   description: string;
   gasLimit: number;
+  inputFormat: string[];
+  outputFormat: string[];
 };

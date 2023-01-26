@@ -1,17 +1,18 @@
 export default function Input({
   placeholder,
   type,
-  children,
+  disabled = false,
 }: {
   placeholder: string;
   type: string;
-  children?: React.ReactNode;
+  disabled?: boolean;
 }) {
   return (
     <input
-      className="rounded-md pl-4 h-12 bg-gray-100"
+      className="rounded-md pl-4 h-8 w-full bg-gray-100"
       placeholder={placeholder}
       type={type}
+      disabled={disabled}
     />
   );
 }

@@ -1,0 +1,1 @@
+cp ./etc/mode-solidity.js ./node_modules/ace-builds/src-min-noconflict/mode-solidity.js

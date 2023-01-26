@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import { useParams } from "react-router-dom";
 import { MathJax, MathJaxContext } from "better-react-mathjax";
+
+import { ProblemSDK } from "@solidity-judge/sdk";
 
 import { useAppDispatch } from "redux/hooks";
 import { Problem } from "types/Problem";
@@ -14,6 +16,8 @@ import Button from "components/Button/Button";
 import { compileCode, getProblem } from "api/problems";
 import Switch from "components/Switch/Switch";
 import Input from "components/Input/Input";
+import { useConnectWallet } from "@web3-onboard/react";
+import { ethers } from "ethers";
 
 const defaultProblem: Problem = {
   id: 0,
@@ -130,10 +134,45 @@ export default function ProblemPage() {
 }
 
 function TestPanel({ problem, code }: { problem: Problem; code: string }) {
-  const handleSubmit = () => {
-    console.log(code);
+  const [{ wallet }] = useConnectWallet();
+  const inputs = useRef(problem.inputFormat.map(() => ""));
+  const [outputs, setOutputs] = React.useState<string[]>([]);
+
+  useEffect(() => {
+    setOutputs(problem.outputFormat);
+  }, [problem.outputFormat]);
+
+  const handleInputChange = (
+    index: number,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    inputs.current[index] = event.target.value;
+  };
+
+  const handleSubmit = async () => {
+    if (!wallet) return;
+    const ethersProvider = new ethers.providers.Web3Provider(
+      wallet.provider,
+      "any"
+    );
+
+    const signer = ethersProvider.getSigner();
+    const userAddress = await signer.getAddress();
+
     compileCode(code).then((data) => {
-      console.log(data);
+      const sdk = new ProblemSDK(
+        {
+          inputFormat: problem.inputFormat,
+          outputFormat: problem.outputFormat,
+          problem: problem.address,
+        },
+        userAddress,
+        signer
+      );
+
+      sdk.deployAndRunExample(inputs.current, data.bytecode).then((result) => {
+        setOutputs(result);
+      });
     });
   };
 
@@ -143,13 +182,17 @@ function TestPanel({ problem, code }: { problem: Problem; code: string }) {
         <div className="font-medium text-center">Input</div>
         {problem.inputFormat.map((input, index) => (
           <div className="mb-2" key={index}>
-            <Input type="text" placeholder={input} />
+            <Input
+              type="text"
+              placeholder={input}
+              onChange={(e) => handleInputChange(index, e)}
+            />
           </div>
         ))}
       </div>
       <div>
         <div className="font-medium text-center">Output</div>
-        {problem.outputFormat.map((output, index) => (
+        {outputs.map((output, index) => (
           <div className="mb-2" key={index}>
             <Input type="text" placeholder={output} disabled={true} />
           </div>

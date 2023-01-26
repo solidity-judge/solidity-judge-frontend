@@ -2,10 +2,12 @@ export default function Input({
   placeholder,
   type,
   disabled = false,
+  onChange = () => {},
 }: {
   placeholder: string;
   type: string;
   disabled?: boolean;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) {
   return (
     <input
@@ -13,6 +15,7 @@ export default function Input({
       placeholder={placeholder}
       type={type}
       disabled={disabled}
+      onChange={onChange}
     />
   );
 }

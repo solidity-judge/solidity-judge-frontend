@@ -34,7 +34,7 @@
     "eject": "react-scripts eject",
     "update-sdk": "yarn add https://github.com/solidity-judge/contract.git#release",
     "install-solidity-mode": "cp ./etc/mode-solidity.js ./node_modules/ace-builds/src-noconflict/mode-solidity.js",
-    "prepare": "yarn install-solidity-mode"
+    "prepare": "yarn install-solidity-mode && rm -rf ./node_modules/.cache"
   },
   "eslintConfig": {
     "extends": [

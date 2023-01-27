@@ -236,9 +236,15 @@ function SubmitPanel({ code, problem }: { problem: Problem; code: string }) {
         signer
       );
 
-      sdk.submitSolution(data.bytecode).then((result) => {
-        console.log(result);
-      });
+      sdk
+        .submitSolution(data.bytecode)
+        .then((x) => x.wait())
+        .then((result) => {
+          console.log(result);
+          sdk.parseSubmissionVerdict(result.transactionHash).then((verdict) => {
+            console.log(verdict);
+          });
+        });
     });
   };
 

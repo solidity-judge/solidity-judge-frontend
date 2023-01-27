@@ -204,7 +204,7 @@ function TestPanel({ problem, code }: { problem: Problem; code: string }) {
           text="Run"
           fullWidth={true}
           onClick={handleSubmit}
-          disabled={true}
+          disabled={false}
         />
       ) : (
         <WalletLogin />

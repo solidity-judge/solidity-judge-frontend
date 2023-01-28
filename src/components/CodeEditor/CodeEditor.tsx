@@ -14,13 +14,9 @@ export default function CodeEditor({ setCode, problemId }: { setCode: (code: str
 
   const defaultCode = localStorage.getItem(getStorageKey(problemId)) ?? templateCode;
 
-  let lastSavedTimestamp = 0;
   const setCodeAndSave = (code: string) => {
     setCode(code);
-    if (Date.now() - lastSavedTimestamp > 1000) {
-      onSave(code);
-      lastSavedTimestamp = Date.now();
-    }
+    onSave(code);
   };
 
   return (

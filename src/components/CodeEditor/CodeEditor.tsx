@@ -14,7 +14,16 @@ export default function CodeEditor({
         width="100%"
         height="100%"
         onChange={(code) => setCode(code)}
+        defaultValue={templateCode}
       />
     </div>
   );
 }
+
+const templateCode = `pragma solidity ^0.8.17;
+
+contract Solution {
+    function execute(bytes memory input) external returns (bytes memory) {
+        
+    }
+}`;

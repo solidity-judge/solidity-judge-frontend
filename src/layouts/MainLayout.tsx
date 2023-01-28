@@ -2,8 +2,8 @@ import * as React from "react";
 
 import { useNavigate } from "react-router-dom";
 
-import { ReactComponent as BellIcon } from "assets/svg/bell.svg";
 import { ReactComponent as SettingsIcon } from "assets/svg/settings.svg";
+import { ReactComponent as SolidityIcon } from "assets/svg/solidity.svg";
 
 import PageLayout from "layouts/PageLayout";
 
@@ -68,6 +68,7 @@ export default function MainLayout({
       <div className="fixed h-screen bg-white w-64 border-r-2 border-gray-200">
         <div className="flex flex-row justify-center h-24">
           <div className="flex items-center">
+            <SolidityIcon width={60} />
             <span className="font-bold text-lg">SOLIDITY JUDGE</span>
           </div>
         </div>
@@ -152,11 +153,7 @@ export default function MainLayout({
             </div>
           </div>
           <div className="flex flex-row gap-6">
-            <div className="rounded-full p-2 shadow-lg shadow-gray-200 hover:cursor-pointer hover:bg-indigo-700">
-              <BellIcon height={25} width={25} />
-            </div>
             <div>
-              {/* <Button text="Login" onClick={() => handleModalOpen()} /> */}
               <WalletLogin />
             </div>
           </div>

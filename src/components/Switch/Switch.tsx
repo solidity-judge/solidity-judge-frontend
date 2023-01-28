@@ -1,7 +1,15 @@
 import React from "react";
 
-export default function Switch({ items }: { items: SwitchItems[] }) {
-  const [selectedTab, setSelectedTab] = React.useState(items[0].id);
+export default function Switch({
+  items,
+  defaultSelectedId,
+}: {
+  items: SwitchItems[];
+  defaultSelectedId?: string;
+}) {
+  const [selectedTab, setSelectedTab] = React.useState(
+    defaultSelectedId || items[0].id
+  );
 
   return (
     <div className="flex flex-col p-3 border rounded-md">

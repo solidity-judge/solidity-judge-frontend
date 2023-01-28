@@ -3,8 +3,11 @@ import { useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import { useParams } from "react-router-dom";
 import { MathJax, MathJaxContext } from "better-react-mathjax";
+import { useConnectWallet } from "@web3-onboard/react";
+import { ethers } from "ethers";
 
 import { ProblemSDK } from "@solidity-judge/sdk";
+import type { SubmissionResult } from "@solidity-judge/sdk";
 
 import { useAppDispatch } from "redux/hooks";
 import { Problem } from "types/Problem";
@@ -16,9 +19,9 @@ import Button from "components/Button/Button";
 import { compileCode, getProblem } from "api/problems";
 import Switch from "components/Switch/Switch";
 import Input from "components/Input/Input";
-import { useConnectWallet } from "@web3-onboard/react";
-import { ethers } from "ethers";
 import WalletLogin from "components/Button/WalletLogin";
+
+import { ReactComponent as LoadingIcon } from "assets/svg/loading.svg";
 
 const defaultProblem: Problem = {
   id: 0,
@@ -125,7 +128,7 @@ export default function ProblemPage() {
           <div className="flex flex-row grow gap-3">
             <CodeEditor setCode={setCode} problemId={problemId} />
             <div className="flex flex-col gap-3">
-              <Switch items={switchItems} />
+              <Switch items={switchItems} defaultSelectedId={"submit"} />
             </div>
           </div>
         )}
@@ -180,7 +183,7 @@ function TestPanel({ problem, code }: { problem: Problem; code: string }) {
   return (
     <div className="flex flex-col gap-3 py-2">
       <div>
-        <div className="font-medium text-center">Input</div>
+        <div className="font-medium text-center text-sm">Input</div>
         {problem.inputFormat.map((input, index) => (
           <div className="mb-2" key={index}>
             <Input
@@ -192,7 +195,7 @@ function TestPanel({ problem, code }: { problem: Problem; code: string }) {
         ))}
       </div>
       <div>
-        <div className="font-medium text-center">Output</div>
+        <div className="font-medium text-center text-sm">Output</div>
         {outputs.map((output, index) => (
           <div className="mb-2" key={index}>
             <Input type="text" placeholder={output} disabled={true} />
@@ -202,6 +205,7 @@ function TestPanel({ problem, code }: { problem: Problem; code: string }) {
       {wallet ? (
         <Button
           text="Run"
+          className="text-sm"
           fullWidth={true}
           onClick={handleSubmit}
           disabled={false}
@@ -215,8 +219,12 @@ function TestPanel({ problem, code }: { problem: Problem; code: string }) {
 
 function SubmitPanel({ code, problem }: { problem: Problem; code: string }) {
   const [{ wallet }] = useConnectWallet();
+  const [showResult, setShowResult] = React.useState(false);
+  const [verdict, setVerdict] = React.useState<SubmissionResult | null>(null);
+
   const handleSubmit = async () => {
     if (!wallet) return;
+    setShowResult(true);
     const ethersProvider = new ethers.providers.Web3Provider(
       wallet.provider,
       "any"
@@ -242,16 +250,48 @@ function SubmitPanel({ code, problem }: { problem: Problem; code: string }) {
         .then((result) => {
           console.log(result);
           sdk.parseSubmissionVerdict(result.transactionHash).then((verdict) => {
-            console.log(verdict);
+            setVerdict(verdict);
           });
+        })
+        .catch((err) => {
+          console.log(err);
+          setShowResult(false);
         });
     });
   };
 
   return (
     <div className="flex flex-col gap-3 py-2">
+      {showResult && (
+        <div
+          className={
+            "border rounded-md p-3" +
+            (verdict
+              ? verdict.point === 100
+                ? " bg-green-500"
+                : " bg-red-500"
+              : "")
+          }
+        >
+          {verdict ? (
+            <div className="text-center text-sm font-medium">
+              Point: {verdict.point}/100
+            </div>
+          ) : (
+            <div className="flex flex-row gap-3 items-center justify-center">
+              <LoadingIcon className="animate-spin" width={30} height={30} />
+              <div className="flex flex-col text-sm">Waiting result...</div>
+            </div>
+          )}
+        </div>
+      )}
       {wallet ? (
-        <Button text="Submit" fullWidth={true} onClick={handleSubmit} />
+        <Button
+          text="Submit"
+          className="text-sm"
+          fullWidth={true}
+          onClick={handleSubmit}
+        />
       ) : (
         <WalletLogin />
       )}

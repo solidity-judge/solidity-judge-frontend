@@ -7,11 +7,12 @@ import { lastProblemSlice } from "./slices/lastProblem";
 import { previousWalletSlice } from "./slices/previousWallet";
 import { problemListSlice } from "./slices/problemList";
 import { selectedPageSlice } from "./slices/selectedPage";
+import { sourceCodeSlice } from "./slices/sourceCode";
 
 const persistConfig = {
   key: "root",
   storage: storage,
-  whitelist: ["previousWallet"],
+  whitelist: ["previousWallet", "sourceCode"],
 };
 
 const persistedReducer = persistReducer(
@@ -21,6 +22,7 @@ const persistedReducer = persistReducer(
     selectedPage: selectedPageSlice.reducer,
     problemList: problemListSlice.reducer,
     previousWallet: previousWalletSlice.reducer,
+    sourceCode: sourceCodeSlice.reducer,
   })
 );
 

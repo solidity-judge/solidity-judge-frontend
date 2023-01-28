@@ -28,16 +28,6 @@ export default function CodeEditor({ setCode, problemId }: { setCode: (code: str
         onLoad={() => setCode(defaultCode)}
         onChange={(code) => setCodeAndSave(code)}
         defaultValue={defaultCode}
-        commands={[
-          {
-            name: "save",
-            bindKey: {
-              win: "Ctrl-S",
-              mac: "Cmd-S",
-            },
-            exec: (editor) => onSave(editor.getValue()),
-          },
-        ]}
       />
     </div>
   );

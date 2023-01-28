@@ -7,8 +7,6 @@ function getStorageKey(problemId: number) {
 }
 
 export default function CodeEditor({ setCode, problemId }: { setCode: (code: string) => void; problemId: number }) {
-  console.log("problemId", problemId);
-
   function onSave(source: string) {
     const key = getStorageKey(problemId);
     localStorage.setItem(key, source);

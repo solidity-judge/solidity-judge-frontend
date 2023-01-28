@@ -241,8 +241,9 @@ function SubmitPanel({ code, problem }: { problem: Problem; code: string }) {
         .then((x) => x.wait())
         .then((result) => {
           console.log(result);
-          sdk.parseSubmissionVerdict(result.transactionHash).then((verdict) => {
+          sdk.parseSubmissionVerdict(result).then((verdict) => {
             console.log(verdict);
+            alert("Points: " + verdict.point + "\n" + verdict.verdicts);
           });
         });
     });

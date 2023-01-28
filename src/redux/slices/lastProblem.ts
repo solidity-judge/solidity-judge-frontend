@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "redux/store";
-import { ProblemPreview } from "types/Problem";
+import type { ProblemPreview } from "types/Problem";
 
 const initialState: ProblemPreview = {
   id: 0,

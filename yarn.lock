@@ -2431,7 +2431,7 @@
 
 "@solidity-judge/sdk@https://github.com/solidity-judge/contract.git#release":
   version "1.0.0"
-  resolved "https://github.com/solidity-judge/contract.git#933f9ec9282ed27d7d88c941bf73fc9a0599e1e0"
+  resolved "https://github.com/solidity-judge/contract.git#fe3f4de4aaaa32c69b0ddc4b9d63b287dbdbbbd9"
   dependencies:
     "@agnostico/browser-solidity-compiler" "^0.1.1"
     bignumber.js "^9.1.1"

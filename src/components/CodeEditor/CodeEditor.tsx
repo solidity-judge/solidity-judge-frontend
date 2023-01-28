@@ -13,6 +13,7 @@ export default function CodeEditor({ setCode, problemId }: { setCode: (code: str
   }
 
   const code = localStorage.getItem(getStorageKey(problemId)) ?? templateCode;
+  setCode(code);
 
   return (
     <div className="w-full h-full border">

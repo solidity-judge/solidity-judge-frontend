@@ -42,6 +42,9 @@
       "redux/*": [
         "redux/*",
       ],
+      "constants/*": [
+        "constants/*",
+      ],
     }
   },
   "include": [

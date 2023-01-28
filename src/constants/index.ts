@@ -1,1 +1,0 @@
-export const PREVIOUSLY_CONNECTED_WALLET_KEY = 'soju_previouslyConnectedWallets'

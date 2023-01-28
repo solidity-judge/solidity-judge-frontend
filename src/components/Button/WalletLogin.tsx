@@ -3,8 +3,10 @@ import { init, useConnectWallet } from "@web3-onboard/react";
 import injectedModule from "@web3-onboard/injected-wallets";
 
 import Button from "components/Button/Button";
-import { PREVIOUSLY_CONNECTED_WALLET_KEY } from "../../constants";
 import { WalletState } from "@web3-onboard/core";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
+
+import { setPreviousWallet } from "redux/slices/previousWallet";
 
 const injected = injectedModule();
 
@@ -34,21 +36,22 @@ init({
 export default function WalletLogin() {
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
   const [buttonText, setButtonText] = React.useState("Connect to Wallet");
+  const previousWallet = useAppSelector((state) => state.previousWallet);
+  const dispatch = useAppDispatch();
 
   const disconnectWallet = (wallet: WalletState) => {
-    localStorage.removeItem(PREVIOUSLY_CONNECTED_WALLET_KEY);
+    dispatch(setPreviousWallet("[]"));
     disconnect(wallet!);
-  }
+  };
 
   const connectWallet = () => {
-    connect().then(newWallets => {
-      const walletLabel = JSON.stringify(newWallets.map(wallet => wallet.label));
-      localStorage.setItem(
-        PREVIOUSLY_CONNECTED_WALLET_KEY,
-        walletLabel,
+    connect().then((newWallets) => {
+      const walletLabel = JSON.stringify(
+        newWallets.map((wallet) => wallet.label)
       );
-    })
-  }
+      dispatch(setPreviousWallet(walletLabel));
+    });
+  };
 
   React.useEffect(() => {
     if (wallet) {
@@ -65,14 +68,12 @@ export default function WalletLogin() {
       }
     }
 
-    const previouslyConnectedWallets = JSON.parse(
-      localStorage.getItem(PREVIOUSLY_CONNECTED_WALLET_KEY) || '[]',
-    )
+    const previouslyConnectedWallets = JSON.parse(previousWallet);
     // Connect to old wallets if available
     if (!wallet && previouslyConnectedWallets.length) {
       connect({ autoSelect: previouslyConnectedWallets[0] });
     }
-  }, [wallet, connecting, connect]);
+  }, [wallet, connecting, previousWallet, dispatch, connect]);
 
   return (
     <Button

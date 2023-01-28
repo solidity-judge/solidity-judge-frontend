@@ -13,7 +13,6 @@ export default function CodeEditor({ setCode, problemId }: { setCode: (code: str
   }
 
   const code = localStorage.getItem(getStorageKey(problemId)) ?? templateCode;
-  setCode(code);
 
   return (
     <div className="w-full h-full border">
@@ -21,6 +20,7 @@ export default function CodeEditor({ setCode, problemId }: { setCode: (code: str
         mode="solidity"
         width="100%"
         height="100%"
+        onLoad={() => setCode(code)}
         onChange={(code) => setCode(code)}
         defaultValue={code}
         commands={[

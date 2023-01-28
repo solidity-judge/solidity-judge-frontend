@@ -12,7 +12,16 @@ export default function CodeEditor({ setCode, problemId }: { setCode: (code: str
     localStorage.setItem(key, source);
   }
 
-  const code = localStorage.getItem(getStorageKey(problemId)) ?? templateCode;
+  const defaultCode = localStorage.getItem(getStorageKey(problemId)) ?? templateCode;
+
+  let lastSavedTimestamp = 0;
+  const setCodeAndSave = (code: string) => {
+    setCode(code);
+    if (Date.now() - lastSavedTimestamp > 1000) {
+      onSave(code);
+      lastSavedTimestamp = Date.now();
+    }
+  };
 
   return (
     <div className="w-full h-full border">
@@ -20,9 +29,9 @@ export default function CodeEditor({ setCode, problemId }: { setCode: (code: str
         mode="solidity"
         width="100%"
         height="100%"
-        onLoad={() => setCode(code)}
-        onChange={(code) => setCode(code)}
-        defaultValue={code}
+        onLoad={() => setCode(defaultCode)}
+        onChange={(code) => setCodeAndSave(code)}
+        defaultValue={defaultCode}
         commands={[
           {
             name: "save",

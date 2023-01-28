@@ -123,7 +123,7 @@ export default function ProblemPage() {
           </MathJaxContext>
         ) : (
           <div className="flex flex-row grow gap-3">
-            <CodeEditor setCode={setCode} />
+            <CodeEditor setCode={setCode} problemId={problemId} />
             <div className="flex flex-col gap-3">
               <Switch items={switchItems} />
             </div>

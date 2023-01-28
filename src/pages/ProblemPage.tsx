@@ -236,6 +236,12 @@ function SubmitPanel({ code, problem }: { problem: Problem; code: string }) {
         signer
       );
 
+      const verdictMapping = {
+        0: "Accepted",
+        1: "Wrong Answer",
+        2: "Revert",
+      };
+
       sdk
         .submitSolution(data.bytecode)
         .then((x) => x.wait())
@@ -243,7 +249,14 @@ function SubmitPanel({ code, problem }: { problem: Problem; code: string }) {
           console.log(result);
           sdk.parseSubmissionVerdict(result).then((verdict) => {
             console.log(verdict);
-            alert("Points: " + verdict.point + "\n" + verdict.verdicts);
+            alert(
+              "Points: " +
+                verdict.point +
+                "\n" +
+                verdict.verdicts
+                  .map((x, i) => `test ${i}: ${verdictMapping[x]}`)
+                  .join("\n")
+            );
           });
         });
     });

@@ -28,6 +28,7 @@ const persistedReducer = persistReducer(
 
 export const store = configureStore({
   reducer: persistedReducer,
+  middleware: [],
 });
 
 export const persistor = persistStore(store);

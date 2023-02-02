@@ -3,6 +3,7 @@ import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-solidity";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { setSourceCode } from "redux/slices/sourceCode";
+import { useEffect } from "react";
 
 export default function CodeEditor({
   setCode,
@@ -13,6 +14,10 @@ export default function CodeEditor({
 }) {
   const dispatch = useAppDispatch();
   const code = useAppSelector((state) => state.sourceCode[problemId]);
+
+  useEffect(() => {
+    setCode(code ? code : templateCode);
+  }, [code, setCode]);
 
   return (
     <div className="w-full h-full border">

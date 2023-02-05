@@ -1,8 +1,16 @@
 import { CompilerResponse } from "types/CompilerResponse";
-import { Problem, ProblemPreviewList } from "types/Problem";
+import { Problem, ProblemListResponse } from "types/Problem";
 
-export async function getProblems(): Promise<ProblemPreviewList> {
-  const res = await fetch(process.env.REACT_APP_BACKEND_URL + "problems");
+export async function getProblems(
+  pageNumber: number
+): Promise<ProblemListResponse> {
+  const res = await fetch(
+    process.env.REACT_APP_BACKEND_URL +
+      "problems?" +
+      new URLSearchParams({
+        skip: (pageNumber * 10).toString(),
+      })
+  );
   return await res.json();
 }
 

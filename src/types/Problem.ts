@@ -8,9 +8,9 @@ export type ProblemPreview = {
 
 export type ProblemPreviewList = {
   total: number;
-  itemsPerPage: number;
-  page: number;
-  problems: ProblemPreview[];
+  pages: {
+    [pageId: string]: ProblemPreview[];
+  };
 };
 
 export type Problem = ProblemPreview & {
@@ -22,4 +22,9 @@ export type Problem = ProblemPreview & {
   gasLimit: number;
   inputFormat: string[];
   outputFormat: string[];
+};
+
+export type ProblemListResponse = {
+  total: number;
+  problems: ProblemPreview[];
 };

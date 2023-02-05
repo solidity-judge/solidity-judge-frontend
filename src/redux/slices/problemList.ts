@@ -5,9 +5,7 @@ import { ProblemPreviewList } from "types/Problem";
 
 const initialState: ProblemPreviewList = {
   total: 0,
-  itemsPerPage: 0,
-  page: 0,
-  problems: [],
+  pages: {},
 };
 
 export const problemListSlice = createSlice({

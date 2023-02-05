@@ -4,6 +4,7 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 import { lastProblemSlice } from "./slices/lastProblem";
+import { modalSlice } from "./slices/modal";
 import { previousWalletSlice } from "./slices/previousWallet";
 import { problemListSlice } from "./slices/problemList";
 import { selectedPageSlice } from "./slices/selectedPage";
@@ -23,6 +24,7 @@ const persistedReducer = persistReducer(
     problemList: problemListSlice.reducer,
     previousWallet: previousWalletSlice.reducer,
     sourceCode: sourceCodeSlice.reducer,
+    modal: modalSlice.reducer,
   })
 );
 

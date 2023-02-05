@@ -4,9 +4,14 @@ import injectedModule from "@web3-onboard/injected-wallets";
 
 import Button from "components/Button/Button";
 import { WalletState } from "@web3-onboard/core";
+import { ethers } from "ethers";
+
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 import { setPreviousWallet } from "redux/slices/previousWallet";
+import { openModal } from "redux/slices/modal";
+import { ModalType } from "constants/modal";
+import { UserSdk } from "@solidity-judge/sdk";
 
 const injected = injectedModule();
 
@@ -40,26 +45,36 @@ export default function WalletLogin() {
   const dispatch = useAppDispatch();
 
   const disconnectWallet = (wallet: WalletState) => {
-    dispatch(setPreviousWallet("[]"));
+    dispatch(setPreviousWallet(""));
     disconnect(wallet!);
   };
 
   const connectWallet = () => {
     connect().then((newWallets) => {
-      const walletLabel = JSON.stringify(
-        newWallets.map((wallet) => wallet.label)
-      );
+      const walletLabel = newWallets[0].label;
       dispatch(setPreviousWallet(walletLabel));
     });
   };
 
   React.useEffect(() => {
     if (wallet) {
-      setButtonText(
-        wallet.accounts[0].address.slice(0, 6) +
-          "..." +
-          wallet.accounts[0].address.slice(-4)
+      const userAddress = wallet.accounts[0].address;
+      setButtonText(userAddress.slice(0, 4) + "..." + userAddress.slice(-4));
+
+      const ethersProvider = new ethers.providers.Web3Provider(
+        wallet.provider,
+        "any"
       );
+      const signer = ethersProvider.getSigner();
+
+      const userSdk = new UserSdk(signer);
+      userSdk.getUsername(wallet.accounts[0].address).then((username) => {
+        if (username === "") {
+          dispatch(openModal(ModalType.REGISTER_USER));
+        } else {
+          setButtonText(username);
+        }
+      });
     } else {
       if (connecting) {
         setButtonText("Connecting...");
@@ -68,10 +83,9 @@ export default function WalletLogin() {
       }
     }
 
-    const previouslyConnectedWallets = JSON.parse(previousWallet);
     // Connect to old wallets if available
-    if (!wallet && previouslyConnectedWallets.length) {
-      connect({ autoSelect: previouslyConnectedWallets[0] });
+    if (!wallet && previousWallet.length) {
+      connect({ autoSelect: { label: previousWallet, disableModals: true } });
     }
   }, [wallet, connecting, previousWallet, dispatch, connect]);
 

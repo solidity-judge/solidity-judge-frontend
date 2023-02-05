@@ -2,27 +2,26 @@ import * as React from "react";
 import { Routes, Route } from "react-router-dom";
 
 import MainLayout from "./layouts/MainLayout";
-import LoginModal from "components/Modal/LoginModal";
 
 import ProblemPage from "pages/ProblemPage";
 import ProblemsPage from "pages/ProblemsPage";
+import { useAppSelector } from "redux/hooks";
+import { ModalType } from "constants/modal";
+import RegisterModal from "components/Modal/RegisterModal";
 
 export default function App() {
-  const [modalOpen, setModalOpen] = React.useState(false);
+  const modal = useAppSelector((state) => state.modal);
 
   return (
     <>
-      <MainLayout
-        handleModalOpen={() => setModalOpen(true)}
-        handleModalClose={() => setModalOpen(false)}
-      >
+      <MainLayout>
         <Routes>
           <Route path="problems" element={<ProblemsPage />} />
           <Route path="problems/:problemId" element={<ProblemPage />} />
           <Route path="*" element={<NoMatch />} />
         </Routes>
       </MainLayout>
-      {modalOpen && <LoginModal handleModalClose={() => setModalOpen(false)} />}
+      {modal === ModalType.REGISTER_USER && <RegisterModal />}
     </>
   );
 }

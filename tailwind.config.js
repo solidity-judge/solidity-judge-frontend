@@ -2,7 +2,14 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        c1: "#B6EADA",
+        c2: "#5B8FB9",
+        c3: "#301E67",
+        c4: "#03001C"
+      }
+    },
   },
   plugins: [
     require('@tailwindcss/typography'),

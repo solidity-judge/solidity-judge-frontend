@@ -7,8 +7,8 @@ interface SelectedPageState {
 }
 
 const initialState: SelectedPageState = {
-  id: "home",
-  name: "Home",
+  id: "",
+  name: "",
 };
 
 export const selectedPageSlice = createSlice({

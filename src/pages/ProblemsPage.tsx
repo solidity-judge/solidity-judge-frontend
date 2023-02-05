@@ -6,11 +6,16 @@ import { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { setProblemList } from "redux/slices/problemList";
+import { setSelectedPage } from "redux/slices/selectedPage";
 
 export default function ProblemsPage() {
   const problemList = useAppSelector((state) => state.problemList);
   const [currentPage, setCurrentPage] = React.useState(0);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(setSelectedPage({ id: "problems", name: "Problems" }));
+  });
 
   useEffect(() => {
     const response = getProblems(currentPage);

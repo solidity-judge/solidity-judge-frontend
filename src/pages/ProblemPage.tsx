@@ -54,13 +54,13 @@ export default function ProblemPage() {
       dispatch(
         setSelectedPage({
           id: problemId.toString(),
-          name: problemId.toString() + " - " + data.title,
+          name: problemId.toString() + " — " + data.title, // —
         })
       );
       dispatch(
         setLastProblem({
           ...data,
-          title: data.id + " - " + data.title,
+          title: data.id + " — " + data.title,
         })
       );
     });
@@ -77,15 +77,15 @@ export default function ProblemPage() {
   ];
 
   return (
-    <div className="flex grow flex-col border-t pt-3 gap-3">
+    <div className="flex grow flex-col gap-3 border-t pt-3">
       <div className="flex flex-row gap-3">
         {tabs.map((tab) => (
           <div
             key={tab}
             className={
-              "text-sm p-1 rounded-md font-medium hover:cursor-pointer" +
+              "rounded-md p-1 text-sm font-medium hover:cursor-pointer" +
               (activeTab === tab
-                ? " bg-indigo-500 shadow-lg shadow-indigo-500/50 text-white"
+                ? " bg-indigo-500 text-white shadow-lg shadow-indigo-500/50"
                 : "")
             }
             onClick={() => setActiveTab(tab)}
@@ -94,7 +94,7 @@ export default function ProblemPage() {
           </div>
         ))}
       </div>
-      <div className="flex flex-row grow gap-3">
+      <div className="flex grow flex-row gap-3">
         {activeTab === "problem" ? (
           <MathJaxContext
             config={{
@@ -106,18 +106,18 @@ export default function ProblemPage() {
               },
             }}
           >
-            <div className="flex flex-row gap-3 grow">
+            <div className="flex grow flex-row gap-3">
               <div className="prose max-w-none grow-[2]">
                 <MathJax>
                   <ReactMarkdown>{problem.description}</ReactMarkdown>
                 </MathJax>
               </div>
-              <div className="flex flex-col gap-3 grow">
-                <div className="border rounded-md">
-                  <div className="text-center p-3 border-b font-medium">
+              <div className="flex grow flex-col gap-3">
+                <div className="rounded-md border">
+                  <div className="border-b p-3 text-center font-medium">
                     Gas limit
                   </div>
-                  <div className="text-center p-3 font-bold text-lg">
+                  <div className="p-3 text-center text-lg font-bold">
                     {seperateNumber(problem.gasLimit)}
                   </div>
                 </div>
@@ -125,7 +125,7 @@ export default function ProblemPage() {
             </div>
           </MathJaxContext>
         ) : (
-          <div className="flex flex-row grow gap-3">
+          <div className="flex grow flex-row gap-3">
             <CodeEditor setCode={setCode} problemId={problemId} />
             <div className="flex flex-col gap-3">
               <Switch items={switchItems} defaultSelectedId={"submit"} />
@@ -183,7 +183,7 @@ function TestPanel({ problem, code }: { problem: Problem; code: string }) {
   return (
     <div className="flex flex-col gap-3 py-2">
       <div>
-        <div className="font-medium text-center text-sm">Input</div>
+        <div className="text-center text-sm font-medium">Input</div>
         {problem.inputFormat.map((input, index) => (
           <div className="mb-2" key={index}>
             <Input
@@ -195,7 +195,7 @@ function TestPanel({ problem, code }: { problem: Problem; code: string }) {
         ))}
       </div>
       <div>
-        <div className="font-medium text-center text-sm">Output</div>
+        <div className="text-center text-sm font-medium">Output</div>
         {outputs.map((output, index) => (
           <div className="mb-2" key={index}>
             <Input type="text" placeholder={output} disabled={true} />
@@ -265,7 +265,7 @@ function SubmitPanel({ code, problem }: { problem: Problem; code: string }) {
       {showResult && (
         <div
           className={
-            "border rounded-md p-3" +
+            "rounded-md border p-3" +
             (verdict
               ? verdict.point === 100
                 ? " bg-green-500"
@@ -278,7 +278,7 @@ function SubmitPanel({ code, problem }: { problem: Problem; code: string }) {
               Point: {verdict.point}/100
             </div>
           ) : (
-            <div className="flex flex-row gap-3 items-center justify-center">
+            <div className="flex flex-row items-center justify-center gap-3">
               <LoadingIcon className="animate-spin" width={30} height={30} />
               <div className="flex flex-col text-sm">Waiting result...</div>
             </div>

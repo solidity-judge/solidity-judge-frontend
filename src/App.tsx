@@ -11,7 +11,6 @@ import RegisterModal from "components/Modal/RegisterModal";
 
 export default function App() {
   const modal = useAppSelector((state) => state.modal);
-
   return (
     <>
       <MainLayout>

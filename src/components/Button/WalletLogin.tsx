@@ -2,7 +2,6 @@ import * as React from "react";
 import { init, useConnectWallet } from "@web3-onboard/react";
 import injectedModule from "@web3-onboard/injected-wallets";
 
-import Button from "components/Button/Button";
 import { WalletState } from "@web3-onboard/core";
 import { ethers } from "ethers";
 
@@ -41,6 +40,7 @@ init({
 export default function WalletLogin() {
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
   const [buttonText, setButtonText] = React.useState("Connect to Wallet");
+  const [isHovering, setIsHovering] = React.useState(false);
   const previousWallet = useAppSelector((state) => state.previousWallet);
   const dispatch = useAppDispatch();
 
@@ -76,25 +76,31 @@ export default function WalletLogin() {
         }
       });
     } else {
-      if (connecting) {
-        setButtonText("Connecting...");
-      } else {
-        setButtonText("Connect to Wallet");
+      if (!connecting) {
+        // Connect to old wallets if available
+        if (previousWallet) {
+          connect({
+            autoSelect: { label: previousWallet, disableModals: true },
+          });
+        }
       }
-    }
-
-    // Connect to old wallets if available
-    if (!wallet && previousWallet.length) {
-      connect({ autoSelect: { label: previousWallet, disableModals: true } });
     }
   }, [wallet, connecting, previousWallet, dispatch, connect]);
 
   return (
-    <Button
-      text={buttonText}
+    <button
+      className="w-full rounded-full border py-2 px-5 font-medium hover:bg-c2 hover:text-white"
       onClick={() => (wallet ? disconnectWallet(wallet) : connectWallet())}
-      fullWidth={true}
-      hoverText={wallet ? "Disconnect" : undefined}
-    />
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+    >
+      {wallet
+        ? isHovering
+          ? "Disconnect"
+          : buttonText
+        : connecting
+        ? "Connecting"
+        : "Connect to Wallet"}
+    </button>
   );
 }

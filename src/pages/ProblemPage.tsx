@@ -204,14 +204,15 @@ function TestPanel({ problem, code }: { problem: Problem; code: string }) {
       </div>
       {wallet ? (
         <Button
-          text="Run"
           className="text-sm"
           fullWidth={true}
           onClick={handleSubmit}
           disabled={false}
-        />
+        >
+          Run
+        </Button>
       ) : (
-        <WalletLogin />
+        <span className="mt-3 text-center text-sm">Connect wallet to run</span>
       )}
     </div>
   );
@@ -286,14 +287,11 @@ function SubmitPanel({ code, problem }: { problem: Problem; code: string }) {
         </div>
       )}
       {wallet ? (
-        <Button
-          text="Submit"
-          className="text-sm"
-          fullWidth={true}
-          onClick={handleSubmit}
-        />
+        <Button className="text-sm" fullWidth={true} onClick={handleSubmit}>
+          Submit
+        </Button>
       ) : (
-        <WalletLogin />
+        <span className="mt-3 text-center text-sm">Connect wallet to run</span>
       )}
     </div>
   );

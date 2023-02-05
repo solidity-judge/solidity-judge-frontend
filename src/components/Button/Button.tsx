@@ -1,25 +1,25 @@
 import React, { useEffect } from "react";
 
 export default function Button({
-  text,
+  children,
   fullWidth,
   className,
   hoverText,
   disabled = false,
   onClick,
 }: {
-  text: string;
+  children: string;
   fullWidth?: boolean;
   className?: string;
   hoverText?: string;
   disabled?: boolean;
   onClick: () => void;
 }) {
-  const [buttonText, setButtonText] = React.useState(text);
+  const [buttonText, setButtonText] = React.useState(children);
 
   useEffect(() => {
-    setButtonText(text);
-  }, [text]);
+    setButtonText(children);
+  }, [children]);
 
   return (
     <button
@@ -30,10 +30,10 @@ export default function Button({
       }
       onClick={() => onClick()}
       onMouseEnter={() => hoverText && setButtonText(hoverText)}
-      onMouseLeave={() => hoverText && setButtonText(text)}
+      onMouseLeave={() => hoverText && setButtonText(children)}
       disabled={disabled}
     >
-      {buttonText}
+      {children}
     </button>
   );
 }

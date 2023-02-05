@@ -43,8 +43,8 @@ export default function ProblemList({
             <button
               onClick={() => changePage(page)}
               className={
-                "w-12 border hover:bg-c1 hover:text-white" +
-                (page === current ? " bg-c2 text-white" : "")
+                "h-12 w-12 rounded-lg border" +
+                (page === current ? " bg-c2 text-white" : " hover:bg-gray-100")
               }
             >
               {page + 1}

@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "redux/store";
 
-const initialState: string = "[]";
+const initialState: string = "";
 
 export const previousWalletSlice = createSlice({
   name: "previousWallet",

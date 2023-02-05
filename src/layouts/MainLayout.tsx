@@ -13,12 +13,8 @@ import { setSelectedPage } from "redux/slices/selectedPage";
 
 export default function MainLayout({
   children,
-  handleModalOpen,
-  handleModalClose,
 }: {
   children: React.ReactNode;
-  handleModalOpen: () => void;
-  handleModalClose: () => void;
 }) {
   const selectedPage = useAppSelector((state) => state.selectedPage);
   const lastProblem = useAppSelector((state) => state.lastProblem);

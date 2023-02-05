@@ -6,11 +6,7 @@ import Button from "components/Button/Button";
 import Input from "components/Input/Input";
 import WalletLogin from "components/Button/WalletLogin";
 
-export default function LoginModal({
-  handleModalClose,
-}: {
-  handleModalClose: () => void;
-}) {
+export default function LoginModal() {
   const [selectedTab, setSelectedTab] = React.useState("User");
 
   const roles = ["User", "Admin"];
@@ -20,7 +16,7 @@ export default function LoginModal({
   };
 
   return (
-    <Modal handleModalClose={handleModalClose}>
+    <Modal>
       <div className="flex flex-col gap-6 grow">
         <div className="flex flex-row">
           {roles.map((role) => (

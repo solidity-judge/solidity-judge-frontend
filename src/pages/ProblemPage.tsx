@@ -19,7 +19,6 @@ import Button from "components/Button/Button";
 import { compileCode, getProblem } from "api/problems";
 import Switch from "components/Switch/Switch";
 import Input from "components/Input/Input";
-import WalletLogin from "components/Button/WalletLogin";
 
 import { ReactComponent as LoadingIcon } from "assets/svg/loading.svg";
 
@@ -29,6 +28,7 @@ const defaultProblem: Problem = {
   author: "",
   timestamp: "",
   title: "",
+  solved: false,
   block: 0,
   checker: "",
   isWhitelisted: true,

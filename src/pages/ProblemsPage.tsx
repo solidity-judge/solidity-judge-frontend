@@ -1,3 +1,4 @@
+import { useConnectWallet } from "@web3-onboard/react";
 import { getProblems } from "api/problems";
 import SolvedFilter from "components/Filter/SolvedFilter";
 import ProblemList from "components/Problem/ProblemList";
@@ -9,6 +10,7 @@ import { setProblemList } from "redux/slices/problemList";
 import { setSelectedPage } from "redux/slices/selectedPage";
 
 export default function ProblemsPage() {
+  const [{wallet}] = useConnectWallet();
   const problemList = useAppSelector((state) => state.problemList);
   const [currentPage, setCurrentPage] = React.useState(0);
   const dispatch = useAppDispatch();
@@ -18,7 +20,7 @@ export default function ProblemsPage() {
   });
 
   useEffect(() => {
-    const response = getProblems(currentPage);
+    const response = getProblems(currentPage, wallet?.accounts ? wallet.accounts[0].address : "");
     response.then((data) => {
       dispatch(
         setProblemList({
@@ -30,7 +32,7 @@ export default function ProblemsPage() {
         })
       );
     });
-  }, [currentPage, dispatch]);
+  }, [currentPage, dispatch, wallet]);
 
   return (
     <div className="flex grow flex-row gap-3">

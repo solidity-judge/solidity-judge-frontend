@@ -2,13 +2,15 @@ import { CompilerResponse } from "types/CompilerResponse";
 import { Problem, ProblemListResponse } from "types/Problem";
 
 export async function getProblems(
-  pageNumber: number
+  pageNumber: number,
+  walletAddress: string,
 ): Promise<ProblemListResponse> {
   const res = await fetch(
     process.env.REACT_APP_BACKEND_URL +
       "problems?" +
       new URLSearchParams({
         skip: (pageNumber * 10).toString(),
+        user: walletAddress,
       })
   );
   return await res.json();

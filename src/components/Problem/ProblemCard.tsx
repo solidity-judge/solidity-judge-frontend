@@ -11,12 +11,24 @@ export default function ProblemCard({ problem }: { problem: ProblemPreview }) {
 
   return (
     <div
-      className="flex flex-row gap-3 border rounded-md p-3 hover:bg-indigo-700 hover:text-white hover:cursor-pointer"
+      className={
+        "flex flex-row gap-3 rounded-md border p-3 hover:cursor-pointer" +
+        (problem.solved
+          ? " border-gray-500 bg-c1"
+          : " hover:bg-c2 hover:text-white")
+      }
       onClick={handleClick}
     >
-      <div className="font-medium">{problem.id}</div>
-      <div className="border-l"></div>
+      <div className="w-6 text-center font-medium">{problem.id}</div>
+      <div
+        className={"border-l" + (problem.solved ? " border-gray-500" : "")}
+      ></div>
       <div className="font-medium">{problem.title}</div>
+      {problem.solved && (
+        <div className="ml-auto flex flex-col justify-center">
+          <span className="text-sm font-medium">Solved</span>
+        </div>
+      )}
     </div>
   );
 }

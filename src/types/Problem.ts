@@ -4,6 +4,7 @@ export type ProblemPreview = {
   author: string;
   timestamp: string;
   title: string;
+  solved: boolean;
 };
 
 export type ProblemPreviewList = {

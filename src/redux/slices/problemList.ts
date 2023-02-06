@@ -5,6 +5,7 @@ import { ProblemPreviewList } from "types/Problem";
 
 const initialState: ProblemPreviewList = {
   total: 0,
+  solvedFilter: false,
   pages: {},
 };
 
@@ -18,10 +19,16 @@ export const problemListSlice = createSlice({
         ...action.payload,
       };
     },
+    setSolvedFilter: (state, action: PayloadAction<boolean>) => {
+      return {
+        ...state,
+        solvedFilter: action.payload,
+      };
+    },
   },
 });
 
-export const { setProblemList } = problemListSlice.actions;
+export const { setProblemList, setSolvedFilter } = problemListSlice.actions;
 
 export const selectProblemList = (state: RootState) => state.problemList;
 

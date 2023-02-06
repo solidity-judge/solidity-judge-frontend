@@ -9,6 +9,7 @@ export type ProblemPreview = {
 
 export type ProblemPreviewList = {
   total: number;
+  solvedFilter: boolean;
   pages: {
     [pageId: string]: ProblemPreview[];
   };

@@ -6,13 +6,16 @@ import React from "react";
 import { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "redux/hooks";
-import { setProblemList } from "redux/slices/problemList";
+import { setProblemList, setSolvedFilter } from "redux/slices/problemList";
 import { setSelectedPage } from "redux/slices/selectedPage";
 
 export default function ProblemsPage() {
-  const [{wallet}] = useConnectWallet();
+  const [{ wallet }] = useConnectWallet();
   const problemList = useAppSelector((state) => state.problemList);
   const [currentPage, setCurrentPage] = React.useState(0);
+  const solvedFilter = useAppSelector(
+    (state) => state.problemList.solvedFilter
+  );
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -20,11 +23,16 @@ export default function ProblemsPage() {
   });
 
   useEffect(() => {
-    const response = getProblems(currentPage, wallet?.accounts ? wallet.accounts[0].address : "");
+    const response = getProblems(
+      currentPage,
+      wallet?.accounts ? wallet.accounts[0].address : "",
+      solvedFilter
+    );
     response.then((data) => {
       dispatch(
         setProblemList({
           total: data.total,
+          solvedFilter: solvedFilter,
           pages: {
             ...problemList.pages,
             [currentPage]: data.problems,
@@ -32,7 +40,11 @@ export default function ProblemsPage() {
         })
       );
     });
-  }, [currentPage, dispatch, wallet]);
+  }, [currentPage, dispatch, wallet, solvedFilter]);
+
+  const solvedFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setSolvedFilter(e.target.checked));
+  };
 
   return (
     <div className="flex grow flex-row gap-3">
@@ -45,7 +57,7 @@ export default function ProblemsPage() {
         />
       </div>
       <div className="flex max-w-sm grow flex-col">
-        <SolvedFilter />
+        <SolvedFilter value={solvedFilter} onChange={solvedFilterChange} />
       </div>
     </div>
   );

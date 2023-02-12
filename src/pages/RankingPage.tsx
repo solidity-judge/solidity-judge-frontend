@@ -91,9 +91,15 @@ function UserTag({
           {userObject.username}
         </span>
         <span className="text-center text-sm text-gray-400">
-          {userObject.address.slice(0, 7) +
-            "..." +
-            userObject.address.slice(-5)}
+          <a
+            target="_blank"
+            href={"https://testnet.snowtrace.io/address/" + userObject.address}
+            rel="noopener noreferrer"
+          >
+            {userObject.address.slice(0, 7) +
+              "..." +
+              userObject.address.slice(-5)}
+          </a>
         </span>
       </div>
       <div className="flex w-24 flex-col justify-center">

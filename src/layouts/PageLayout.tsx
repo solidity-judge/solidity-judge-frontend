@@ -6,9 +6,9 @@ export default function PageLayout({
   pageName: string;
 }) {
   return (
-    <div className="flex flex-col gap-3 grow mx-8">
+    <div className="mx-8 flex grow flex-col gap-3">
       <h1 className="text-3xl font-bold">{pageName}</h1>
-      <div className="flex grow">{children}</div>
+      <div className="mb-6 flex grow">{children}</div>
     </div>
   );
 }

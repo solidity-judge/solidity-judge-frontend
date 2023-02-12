@@ -12,7 +12,7 @@ import { setSelectedPage } from "redux/slices/selectedPage";
 export default function ProblemsPage() {
   const [{ wallet }] = useConnectWallet();
   const problemList = useAppSelector((state) => state.problemList);
-  const [currentPage, setCurrentPage] = React.useState(0);
+  const [currentPage, setCurrentPage] = React.useState(1);
   const solvedFilter = useAppSelector(
     (state) => state.problemList.solvedFilter
   );
@@ -20,7 +20,7 @@ export default function ProblemsPage() {
 
   useEffect(() => {
     dispatch(setSelectedPage({ id: "problems", name: "Problems" }));
-  });
+  }, []);
 
   useEffect(() => {
     const response = getProblems(

@@ -1,10 +1,11 @@
 import * as React from "react";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useRoutes } from "react-router-dom";
 
 import { ReactComponent as QuestionIcon } from "assets/svg/question.svg";
-import { ReactComponent as QuestionsIcon } from "assets/svg/questions.svg";
+import { ReactComponent as ProblemsIcon } from "assets/svg/problems.svg";
 import { ReactComponent as SolidityIcon } from "assets/svg/solidity.svg";
+import { ReactComponent as RankingIcon } from "assets/svg/ranking.svg";
 
 import PageLayout from "layouts/PageLayout";
 
@@ -26,8 +27,14 @@ export default function MainLayout({
     {
       id: "problems",
       name: "Problems",
-      icon: QuestionsIcon,
+      icon: ProblemsIcon,
       href: "/problems",
+    },
+    {
+      id: "ranking",
+      name: "Ranking",
+      icon: RankingIcon,
+      href: "/ranking",
     },
   ];
 

@@ -10,7 +10,7 @@ export async function getProblems(
     process.env.REACT_APP_BACKEND_URL +
       "problems?" +
       new URLSearchParams({
-        skip: (pageNumber * 10).toString(),
+        skip: ((pageNumber - 1) * 10).toString(),
         user: walletAddress,
         filterSolved: solvedFilter.toString(),
       })

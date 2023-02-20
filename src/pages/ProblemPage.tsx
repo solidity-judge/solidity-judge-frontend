@@ -21,6 +21,9 @@ import Switch from "components/Switch/Switch";
 import Input from "components/Input/Input";
 
 import { ReactComponent as LoadingIcon } from "assets/svg/loading.svg";
+import SubmissionList from "components/Submission/SubmissionList";
+import { SubmissionListPreview } from "types/Submission";
+import { getSubmissionsByProblem } from "api/submissions";
 
 const defaultProblem: Problem = {
   id: 0,
@@ -43,6 +46,10 @@ export default function ProblemPage() {
   const [activeTab, setActiveTab] = React.useState("problem");
   const [code, setCode] = React.useState("");
   const [problem, setProblem] = React.useState<Problem>(defaultProblem);
+  const [submissionList, setSubmissionList] =
+    React.useState<SubmissionListPreview>({ total: 0, submissions: [] });
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const [nPerPage, setNPerPage] = React.useState(10);
   const dispatch = useAppDispatch();
   const params = useParams();
   const problemId = parseInt(params.problemId ? params.problemId : "0");
@@ -66,7 +73,18 @@ export default function ProblemPage() {
     });
   }, [dispatch, problemId]);
 
-  const tabs = ["problem", "editor"];
+  // Get submission list of this problem
+  useEffect(() => {
+    getSubmissionsByProblem(
+      problem.address,
+      (currentPage - 1) * nPerPage,
+      nPerPage
+    ).then((data) => {
+      setSubmissionList(data);
+    });
+  }, [problem, currentPage, nPerPage]);
+
+  const tabs = ["problem", "editor", "submissions"];
   const switchItems = [
     {
       id: "test",
@@ -95,7 +113,7 @@ export default function ProblemPage() {
         ))}
       </div>
       <div className="flex grow flex-row gap-3">
-        {activeTab === "problem" ? (
+        {activeTab === "problem" && (
           <MathJaxContext
             config={{
               tex: {
@@ -124,12 +142,23 @@ export default function ProblemPage() {
               </div>
             </div>
           </MathJaxContext>
-        ) : (
+        )}
+        {activeTab === "editor" && (
           <div className="flex grow flex-row gap-3">
             <CodeEditor setCode={setCode} problemId={problemId} />
             <div className="flex flex-col gap-3">
               <Switch items={switchItems} defaultSelectedId={"submit"} />
             </div>
+          </div>
+        )}
+        {activeTab === "submissions" && (
+          <div className="flex grow flex-row gap-3">
+            <SubmissionList
+              submissions={submissionList.submissions}
+              current={currentPage}
+              total={submissionList.total}
+              changePage={(pageNumber: number) => setCurrentPage(pageNumber)}
+            />
           </div>
         )}
       </div>

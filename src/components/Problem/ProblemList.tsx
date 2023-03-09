@@ -1,6 +1,5 @@
 import Pagination from "components/Pagination/Pagination";
 import ProblemCard from "components/Problem/ProblemCard";
-import React from "react";
 import { ProblemPreview } from "types/Problem";
 
 export default function ProblemList({

@@ -1,3 +1,5 @@
+import { Category } from "./Category";
+
 export type ProblemPreview = {
   id: number;
   address: string;
@@ -5,6 +7,7 @@ export type ProblemPreview = {
   timestamp: string;
   title: string;
   solved: boolean;
+  categories: Category[];
 };
 
 export type ProblemPreviewList = {

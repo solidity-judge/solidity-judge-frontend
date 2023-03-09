@@ -40,6 +40,7 @@ const defaultProblem: Problem = {
   gasLimit: 0,
   inputFormat: [],
   outputFormat: [],
+  categories: [],
 };
 
 export default function ProblemPage() {

@@ -10,6 +10,7 @@ const initialState: ProblemPreview = {
   timestamp: "",
   title: "",
   solved: false,
+  categories: [],
 };
 
 export const lastProblemSlice = createSlice({

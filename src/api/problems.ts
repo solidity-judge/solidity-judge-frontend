@@ -4,7 +4,8 @@ import { Problem, ProblemListResponse } from "types/Problem";
 export async function getProblems(
   pageNumber: number,
   walletAddress: string,
-  solvedFilter: boolean
+  solvedFilter: boolean,
+  category: string
 ): Promise<ProblemListResponse> {
   const res = await fetch(
     process.env.REACT_APP_BACKEND_URL +
@@ -13,6 +14,7 @@ export async function getProblems(
         skip: ((pageNumber - 1) * 10).toString(),
         user: walletAddress,
         filterSolved: solvedFilter.toString(),
+        category: category,
       })
   );
   return await res.json();

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import MainLayout from "./layouts/MainLayout";
 
@@ -16,6 +16,7 @@ export default function App() {
     <>
       <MainLayout>
         <Routes>
+          <Route path="" element={<Navigate to="problems" replace />} />
           <Route path="problems" element={<ProblemsPage />} />
           <Route path="problems/:problemId" element={<ProblemPage />} />
           <Route path="ranking" element={<RankingPage />} />

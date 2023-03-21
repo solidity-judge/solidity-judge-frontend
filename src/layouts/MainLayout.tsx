@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { useNavigate, useRoutes } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { ReactComponent as QuestionIcon } from "assets/svg/question.svg";
 import { ReactComponent as ProblemsIcon } from "assets/svg/problems.svg";

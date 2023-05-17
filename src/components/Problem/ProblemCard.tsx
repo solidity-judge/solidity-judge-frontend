@@ -29,7 +29,7 @@ export default function ProblemCard({ problem }: { problem: ProblemPreview }) {
       <div>
         <div className="font-medium">{problem.title}</div>
         {problem.categories.map((category) => (
-          <Badge text={category.name} />
+          <Badge text={category.name} key={category.key} />
         ))}
       </div>
 

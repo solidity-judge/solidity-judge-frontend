@@ -49,16 +49,16 @@ export default function MainLayout({
   };
 
   return (
-    <div className="flex h-screen flex-row bg-slate-500">
-      <div className="fixed flex h-screen w-64 flex-col border-r border-gray-100 bg-white">
+    <div className="flex h-screen flex-col bg-slate-500">
+      <div className="flex h-24 w-screen border-b border-gray-100 bg-white">
         <div className="flex h-24 flex-row justify-center">
           <div className="flex items-center">
             <SolidityIcon width={60} />
             <span className="text-lg font-bold">SOLIDITY JUDGE</span>
           </div>
         </div>
-        <div className="flex grow flex-col p-6">
-          <div className="flex flex-col gap-6">
+        <div className="flex grow p-6">
+          <div className="flex gap-6">
             {pages.map((page) => (
               <div
                 key={page.name}
@@ -77,9 +77,9 @@ export default function MainLayout({
               </div>
             ))}
           </div>
-          <div className="mt-6">
-            <div className="mx-12 border-b border-gray-100"></div>
-            <div className="mt-6">
+          <div className="flex">
+            <div className="mx-12 border-l border-gray-100"></div>
+            <div>
               {lastProblem.id > 0 &&
                 [
                   {
@@ -114,10 +114,10 @@ export default function MainLayout({
                 ))}
             </div>
           </div>
-          <div className="mt-auto flex flex-col gap-3">
+          <div className="ml-auto flex flex-col gap-1">
             <WalletLogin />
             <a
-              className="text-center text-sm font-medium text-c3 underline underline-offset-2"
+              className="text-center text-xs font-medium text-c3 no-underline"
               href="https://faucet.avax.network/"
               target="_blank"
               rel="noreferrer"
@@ -127,7 +127,7 @@ export default function MainLayout({
           </div>
         </div>
       </div>
-      <div className="ml-64 flex grow flex-col gap-1 bg-white">
+      <div className="flex grow flex-col gap-1 bg-white">
         <div className="m-8 flex flex-row justify-between">
           <div className="">
             <div>

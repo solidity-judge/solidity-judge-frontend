@@ -2,7 +2,6 @@ import * as React from "react";
 
 import { useNavigate } from "react-router-dom";
 
-import { ReactComponent as QuestionIcon } from "assets/svg/question.svg";
 import { ReactComponent as ProblemsIcon } from "assets/svg/problems.svg";
 import { ReactComponent as SolidityIcon } from "assets/svg/solidity.svg";
 import { ReactComponent as RankingIcon } from "assets/svg/ranking.svg";
@@ -19,7 +18,6 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   const selectedPage = useAppSelector((state) => state.selectedPage);
-  const lastProblem = useAppSelector((state) => state.lastProblem);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -58,13 +56,12 @@ export default function MainLayout({
           </div>
         </div>
         <div className="flex grow p-6">
-          <div className="flex gap-6">
+          <div className="flex gap-3">
             {pages.map((page) => (
               <div
                 key={page.name}
                 className={
-                  "flex h-12 flex-row gap-2 rounded-full px-6 font-medium transition-all hover:cursor-pointer" +
-                  (selectedPage.id === page.id ? " bg-c1" : " hover:bg-c1")
+                  "flex h-12 flex-row gap-2 px-4 font-medium transition-all hover:cursor-pointer hover:border-b-2 hover:border-black"
                 }
                 onClick={() => handlePageClick(page.id, page.name, page.href)}
               >
@@ -72,47 +69,10 @@ export default function MainLayout({
                   {<page.icon height={30} width={30} />}
                 </div>
                 <div className="flex items-center">
-                  <span>{page.name}</span>
+                  <span className="text-sm uppercase">{page.name}</span>
                 </div>
               </div>
             ))}
-          </div>
-          <div className="flex">
-            <div className="mx-12 border-l border-gray-100"></div>
-            <div>
-              {lastProblem.id > 0 &&
-                [
-                  {
-                    icon: QuestionIcon,
-                    name: lastProblem.title,
-                    ...lastProblem,
-                  },
-                ].map((page) => (
-                  <div
-                    key={page.name}
-                    className={
-                      "flex h-12 flex-row gap-2 rounded-full px-6 font-medium transition-all hover:cursor-pointer" +
-                      (selectedPage.id === page.id.toString()
-                        ? " bg-c1"
-                        : " hover:bg-c1")
-                    }
-                    onClick={() =>
-                      handlePageClick(
-                        page.id.toString(),
-                        page.name,
-                        "/problems/" + page.id
-                      )
-                    }
-                  >
-                    <div className="flex items-center">
-                      {<page.icon height={30} width={30} />}
-                    </div>
-                    <div className="flex items-center">
-                      <span>{page.name}</span>
-                    </div>
-                  </div>
-                ))}
-            </div>
           </div>
           <div className="ml-auto flex flex-col gap-1">
             <WalletLogin />
@@ -129,17 +89,8 @@ export default function MainLayout({
       </div>
       <div className="flex grow flex-col gap-1 bg-white">
         <div className="m-8 flex flex-row justify-between">
-          <div className="">
-            <div>
-              <input
-                className="h-10 w-96 rounded-full bg-gray-100 pl-4"
-                type="text"
-                placeholder="Search"
-              />
-            </div>
-          </div>
+          <PageLayout pageName={selectedPage.name}>{children}</PageLayout>
         </div>
-        <PageLayout pageName={selectedPage.name}>{children}</PageLayout>
       </div>
     </div>
   );

@@ -13,7 +13,6 @@ import { useAppDispatch } from "redux/hooks";
 import { Problem } from "types/Problem";
 import { seperateNumber } from "utils/numbers";
 import { setSelectedPage } from "redux/slices/selectedPage";
-import { setLastProblem } from "redux/slices/lastProblem";
 import CodeEditor from "components/CodeEditor/CodeEditor";
 import Button from "components/Button/Button";
 import { compileCode, getProblem } from "api/problems";
@@ -63,12 +62,6 @@ export default function ProblemPage() {
         setSelectedPage({
           id: problemId.toString(),
           name: problemId.toString() + " — " + data.title, // —
-        })
-      );
-      dispatch(
-        setLastProblem({
-          ...data,
-          title: data.id + " — " + data.title,
         })
       );
     });

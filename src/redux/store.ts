@@ -3,7 +3,6 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
-import { lastProblemSlice } from "./slices/lastProblem";
 import { modalSlice } from "./slices/modal";
 import { previousWalletSlice } from "./slices/previousWallet";
 import { problemListSlice } from "./slices/problemList";
@@ -19,7 +18,6 @@ const persistConfig = {
 const persistedReducer = persistReducer(
   persistConfig,
   combineReducers({
-    lastProblem: lastProblemSlice.reducer,
     selectedPage: selectedPageSlice.reducer,
     problemList: problemListSlice.reducer,
     previousWallet: previousWalletSlice.reducer,

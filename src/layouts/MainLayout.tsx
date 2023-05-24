@@ -2,9 +2,8 @@ import * as React from "react";
 
 import { useNavigate } from "react-router-dom";
 
-import { ReactComponent as ProblemsIcon } from "assets/svg/problems.svg";
 import { ReactComponent as SolidityIcon } from "assets/svg/solidity.svg";
-import { ReactComponent as RankingIcon } from "assets/svg/ranking.svg";
+import { BsBoxes, BsBarChart, BsAward } from "react-icons/bs";
 
 import PageLayout from "layouts/PageLayout";
 
@@ -25,14 +24,20 @@ export default function MainLayout({
     {
       id: "problems",
       name: "Problems",
-      icon: ProblemsIcon,
+      icon: BsBoxes,
       href: "/problems",
     },
     {
       id: "ranking",
       name: "Ranking",
-      icon: RankingIcon,
+      icon: BsBarChart,
       href: "/ranking",
+    },
+    {
+      id: "contests",
+      name: "Contests",
+      icon: BsAward,
+      href: "/contests",
     },
   ];
 
@@ -52,7 +57,12 @@ export default function MainLayout({
         <div className="flex h-24 flex-row justify-center">
           <div className="flex items-center">
             <SolidityIcon width={60} />
-            <span className="text-lg font-bold">SOLIDITY JUDGE</span>
+            <span
+              className="text-lg font-bold hover:cursor-pointer"
+              onClick={() => navigate(pages[0].href)}
+            >
+              SOLIDITY JUDGE
+            </span>
           </div>
         </div>
         <div className="flex grow p-6">
@@ -66,7 +76,7 @@ export default function MainLayout({
                 onClick={() => handlePageClick(page.id, page.name, page.href)}
               >
                 <div className="flex items-center">
-                  {<page.icon height={30} width={30} />}
+                  {<page.icon size={20} />}
                 </div>
                 <div className="flex items-center">
                   <span className="text-sm uppercase">{page.name}</span>

@@ -1,6 +1,8 @@
 import { getContests } from "api/contest";
 import ContestList from "components/Contest/ContestList";
 import { useEffect, useReducer } from "react";
+import { useAppDispatch } from "redux/hooks";
+import { setSelectedPage } from "redux/slices/selectedPage";
 import { ContestPreview } from "types/Contest";
 
 type PageState = {
@@ -9,7 +11,8 @@ type PageState = {
   contests: ContestPreview[];
 };
 export default function ContestsPage() {
-  const [state, dispatch] = useReducer(
+  const dispatch = useAppDispatch();
+  const [state, setState] = useReducer(
     (state: PageState, newState: Partial<PageState>) => ({
       ...state,
       ...newState,
@@ -18,9 +21,13 @@ export default function ContestsPage() {
   );
 
   useEffect(() => {
+    dispatch(setSelectedPage({ id: "contests", name: "Contests" }));
+  }, [dispatch]);
+
+  useEffect(() => {
     (async () => {
       const data = await getContests(state.page);
-      dispatch({ contests: data.contests, total: data.total });
+      setState({ contests: data.contests, total: data.total });
     })();
   }, [state.page]);
 
@@ -31,7 +38,7 @@ export default function ContestsPage() {
           contests={state.contests}
           total={state.total}
           current={state.page}
-          changePage={(page) => dispatch({ page })}
+          changePage={(page) => setState({ page })}
         />
       </div>
     </>

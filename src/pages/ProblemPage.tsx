@@ -49,7 +49,6 @@ export default function ProblemPage() {
   const [submissionList, setSubmissionList] =
     React.useState<SubmissionListPreview>({ total: 0, submissions: [] });
   const [currentPage, setCurrentPage] = React.useState(1);
-  const [nPerPage, setNPerPage] = React.useState(10);
   const dispatch = useAppDispatch();
   const params = useParams();
   const problemId = parseInt(params.problemId ? params.problemId : "0");
@@ -69,14 +68,12 @@ export default function ProblemPage() {
 
   // Get submission list of this problem
   useEffect(() => {
-    getSubmissionsByProblem(
-      problem.address,
-      (currentPage - 1) * nPerPage,
-      nPerPage
-    ).then((data) => {
-      setSubmissionList(data);
-    });
-  }, [problem, currentPage, nPerPage]);
+    getSubmissionsByProblem(problem.address, (currentPage - 1) * 10, 10).then(
+      (data) => {
+        setSubmissionList(data);
+      }
+    );
+  }, [problem, currentPage]);
 
   const tabs = ["problem", "editor", "submissions"];
   const switchItems = [

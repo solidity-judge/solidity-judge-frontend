@@ -21,14 +21,13 @@ export default function RankingPage() {
 
   React.useEffect(() => {
     dispatch(setSelectedPage({ id: "ranking", name: "Ranking" }));
-  }, []);
+  }, [dispatch]);
 
   const [users, setUsers] = React.useState<UsersObject>({
     total: 0,
     users: [],
   });
   const [currentPage, setCurrentPage] = React.useState(1);
-  const [nPerPage, setNPerPage] = React.useState(10);
   React.useEffect(() => {
     getUsers().then((data) => {
       setUsers(data);
@@ -50,7 +49,7 @@ export default function RankingPage() {
             <UserTag
               key={idx}
               userObject={user}
-              rank={(currentPage - 1) * nPerPage + idx + 1}
+              rank={(currentPage - 1) * 10 + idx + 1}
               className="even:bg-gray-50"
             />
           ))}

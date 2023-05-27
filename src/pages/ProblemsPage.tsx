@@ -3,7 +3,7 @@ import { getCategories } from "api/categories";
 import { getProblems } from "api/problems";
 import SolvedFilter from "components/Filter/SolvedFilter";
 import ProblemList from "components/Problem/ProblemList";
-import React from "react";
+import React, { useCallback } from "react";
 import { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "redux/hooks";
@@ -27,16 +27,10 @@ export default function ProblemsPage() {
     getCategories().then((categories) => {
       setCategories(categories);
     });
-  }, []);
+  }, [dispatch]);
 
-  useEffect(() => {
-    const response = getProblems(
-      currentPage,
-      wallet?.accounts ? wallet.accounts[0].address : "",
-      solvedFilter,
-      selectedCategory
-    );
-    response.then((data) => {
+  const updateProblems = useCallback(
+    (data: any) => {
       dispatch(
         setProblemList({
           total: data.total,
@@ -47,8 +41,27 @@ export default function ProblemsPage() {
           },
         })
       );
+    },
+    [problemList.pages, currentPage, dispatch, solvedFilter]
+  );
+
+  useEffect(() => {
+    const response = getProblems(
+      currentPage,
+      wallet?.accounts ? wallet.accounts[0].address : "",
+      solvedFilter,
+      selectedCategory
+    );
+    response.then((data) => {
+      updateProblems(data);
     });
-  }, [currentPage, dispatch, wallet, solvedFilter, selectedCategory]);
+  }, [
+    currentPage,
+    dispatch,
+    wallet,
+    solvedFilter,
+    selectedCategory,
+  ]);
 
   const solvedFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSolvedFilter(e.target.checked));
@@ -67,12 +80,12 @@ export default function ProblemsPage() {
       <div className="flex max-w-sm grow flex-col">
         <div className="rounded-md border">
           <div className="border-b px-3 py-2 font-medium">FILTER PROBLEMS</div>
-          <div className="flex flex-col gap-3 py-3 px-5">
+          <div className="flex flex-col gap-3 px-5 py-3">
             <SolvedFilter value={solvedFilter} onChange={solvedFilterChange} />
             <div className="mt-3">
               <div className="text-sm text-gray-600">Category</div>
               <select
-                className="w-full rounded-md py-1 px-3"
+                className="w-full rounded-md px-3 py-1"
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
               >

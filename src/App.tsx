@@ -9,6 +9,7 @@ import { useAppSelector } from "redux/hooks";
 import { ModalType } from "constants/modal";
 import RegisterModal from "components/Modal/RegisterModal";
 import RankingPage from "pages/RankingPage";
+import ContestsPage from "pages/ContestsPage";
 
 export default function App() {
   const modal = useAppSelector((state) => state.modal);
@@ -20,6 +21,7 @@ export default function App() {
           <Route path="problems" element={<ProblemsPage />} />
           <Route path="problems/:problemId" element={<ProblemPage />} />
           <Route path="ranking" element={<RankingPage />} />
+          <Route path="contests" element={<ContestsPage />} />
           <Route path="*" element={<NoMatch />} />
         </Routes>
       </MainLayout>

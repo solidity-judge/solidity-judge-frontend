@@ -197,9 +197,11 @@ function TestPanel({ problem, code }: { problem: Problem; code: string }) {
         signer
       );
 
-      sdk.deployAndRunExample(inputs.current, data.bytecode).then((result) => {
-        setOutputs(result);
-      });
+      sdk
+        .deployAndRunExample(inputs.current, data.bytecode)
+        .then(({ output }) => {
+          setOutputs(output);
+        });
     });
   };
 
@@ -269,7 +271,7 @@ function SubmitPanel({ code, problem }: { problem: Problem; code: string }) {
       );
 
       sdk
-        .submitSolution(data.bytecode)
+        .submitAndRunSolution(data.bytecode)
         .then((x) => x.wait())
         .then((result) => {
           console.log(result);

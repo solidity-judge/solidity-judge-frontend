@@ -3,6 +3,7 @@ export type ContestPreview = {
   name: string;
   description: string;
   title: string;
+  deadline: number;
   problems: number[];
 };
 

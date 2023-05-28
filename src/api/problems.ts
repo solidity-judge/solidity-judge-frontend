@@ -20,6 +20,19 @@ export async function getProblems(
   return await res.json();
 }
 
+export async function getContestProblems(
+  contest: number
+): Promise<ProblemListResponse> {
+  const res = await fetch(
+    process.env.REACT_APP_BACKEND_URL +
+      "problems?" +
+      new URLSearchParams({
+        contest: contest.toString(),
+      })
+  );
+  return await res.json();
+}
+
 export async function getProblem(id: number): Promise<Problem> {
   const res = await fetch(process.env.REACT_APP_BACKEND_URL + "problems/" + id);
   return await res.json();

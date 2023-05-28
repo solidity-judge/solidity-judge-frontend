@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import MainLayout from "./layouts/MainLayout";
@@ -9,6 +8,7 @@ import { useAppSelector } from "redux/hooks";
 import { ModalType } from "constants/modal";
 import RegisterModal from "components/Modal/RegisterModal";
 import RankingPage from "pages/RankingPage";
+import ContestPage from "pages/ContestPage";
 import ContestsPage from "pages/ContestsPage";
 
 export default function App() {
@@ -22,6 +22,7 @@ export default function App() {
           <Route path="problems/:problemId" element={<ProblemPage />} />
           <Route path="ranking" element={<RankingPage />} />
           <Route path="contests" element={<ContestsPage />} />
+          <Route path="contests/:contestId" element={<ContestPage />} />
           <Route path="*" element={<NoMatch />} />
         </Routes>
       </MainLayout>

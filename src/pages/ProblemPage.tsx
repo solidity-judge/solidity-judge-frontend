@@ -269,7 +269,7 @@ function SubmitPanel({ code, problem }: { problem: Problem; code: string }) {
       );
 
       sdk
-        .submitAndRunSolution(data.bytecode)
+        .submitAndRunSolution(data.bytecode, submitHash)
         .then((x) => x.wait())
         .then((result) => {
           console.log(result);

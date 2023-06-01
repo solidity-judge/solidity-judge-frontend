@@ -1,5 +1,6 @@
 export type CompilerResponse = {
   bytecode: string;
+  hash: string;
   errors: CompilerError[];
 };
 

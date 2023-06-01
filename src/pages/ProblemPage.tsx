@@ -32,6 +32,7 @@ const defaultProblem: Problem = {
   title: "",
   solved: false,
   block: 0,
+  deadline: 0,
   checker: "",
   isWhitelisted: true,
   txHash: "",
@@ -245,7 +246,7 @@ function SubmitPanel({ code, problem }: { problem: Problem; code: string }) {
   const [showResult, setShowResult] = React.useState(false);
   const [verdict, setVerdict] = React.useState<SubmissionResult | null>(null);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (submitHash = false) => {
     if (!wallet) return;
     setShowResult(true);
     const ethersProvider = new ethers.providers.Web3Provider(
@@ -268,7 +269,7 @@ function SubmitPanel({ code, problem }: { problem: Problem; code: string }) {
       );
 
       sdk
-        .submitAndRunSolution(data.bytecode)
+        .submitAndRunSolution(data.bytecode, submitHash)
         .then((x) => x.wait())
         .then((result) => {
           console.log(result);
@@ -309,9 +310,24 @@ function SubmitPanel({ code, problem }: { problem: Problem; code: string }) {
         </div>
       )}
       {wallet ? (
-        <Button className="text-sm" fullWidth={true} onClick={handleSubmit}>
-          Submit
-        </Button>
+        <>
+          <Button
+            className="text-sm"
+            fullWidth={true}
+            onClick={() => handleSubmit()}
+          >
+            Submit
+          </Button>
+          {problem.deadline && (
+            <Button
+              className="text-sm"
+              fullWidth={true}
+              onClick={() => handleSubmit(true)}
+            >
+              Submit Hash
+            </Button>
+          )}
+        </>
       ) : (
         <span className="mt-3 text-center text-sm">Connect wallet to run</span>
       )}

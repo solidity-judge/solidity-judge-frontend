@@ -98,7 +98,7 @@ export default function MainLayout({
         </div>
       </div>
       <div className="flex grow flex-col gap-1 bg-white">
-        <div className="m-8 flex flex-row justify-between">
+        <div className="m-8 flex grow flex-row justify-between">
           <PageLayout pageName={selectedPage.name}>{children}</PageLayout>
         </div>
       </div>

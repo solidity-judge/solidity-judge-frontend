@@ -21,6 +21,7 @@ export type ProblemPreviewList = {
 export type Problem = ProblemPreview & {
   block: number;
   checker: string;
+  deadline: number;
   isWhitelisted: boolean;
   txHash: string;
   description: string;

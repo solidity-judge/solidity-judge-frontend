@@ -246,7 +246,7 @@ function SubmitPanel({ code, problem }: { problem: Problem; code: string }) {
   const [showResult, setShowResult] = React.useState(false);
   const [verdict, setVerdict] = React.useState<SubmissionResult | null>(null);
 
-  const handleSubmit = async (submitHash = false) => {
+  const handleSubmit = async (submitHash = false, inContest = false) => {
     if (!wallet) return;
     setShowResult(true);
     const ethersProvider = new ethers.providers.Web3Provider(
@@ -268,19 +268,32 @@ function SubmitPanel({ code, problem }: { problem: Problem; code: string }) {
         signer
       );
 
-      sdk
-        .submitAndRunSolution(data.bytecode, submitHash)
-        .then((x) => x.wait())
-        .then((result) => {
-          console.log(result);
-          sdk.parseSubmissionVerdict(result.transactionHash).then((verdict) => {
-            setVerdict(verdict);
+      if (submitHash) {
+        console.log(data.hash);
+        sdk
+          .declareSolutionHash(data.hash)
+          .then((x) => x.wait())
+          .then((_) => {
+            setShowResult(false);
           });
-        })
-        .catch((err) => {
-          console.log(err);
-          setShowResult(false);
-        });
+      } else {
+        sdk
+          .submitAndRunSolution(data.bytecode, inContest)
+          .then((x) => x.wait())
+          .then((result) => {
+            console.log(result);
+            sdk
+              .parseSubmissionVerdict(result.transactionHash)
+              .then((verdict) => {
+                console.log(verdict);
+                setVerdict(verdict);
+              });
+          })
+          .catch((err) => {
+            console.log(err);
+            setShowResult(false);
+          });
+      }
     });
   };
 
@@ -319,13 +332,22 @@ function SubmitPanel({ code, problem }: { problem: Problem; code: string }) {
             Submit
           </Button>
           {problem.deadline && (
-            <Button
-              className="text-sm"
-              fullWidth={true}
-              onClick={() => handleSubmit(true)}
-            >
-              Submit Hash
-            </Button>
+            <>
+              <Button
+                className="text-sm"
+                fullWidth={true}
+                onClick={() => handleSubmit(true)}
+              >
+                Submit Hash
+              </Button>
+              <Button
+                className="text-sm"
+                fullWidth={true}
+                onClick={() => handleSubmit(false, true)}
+              >
+                Submit Code
+              </Button>
+            </>
           )}
         </>
       ) : (

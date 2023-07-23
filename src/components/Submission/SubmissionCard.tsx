@@ -27,9 +27,14 @@ export default function SubmissionCard({
       </div>
       <div className="flex flex-col justify-center">
         <span className="text-center text-sm">txHash</span>
-        <span className="text-sm font-medium">
+        <a
+          className="text-sm font-medium"
+          target="_blank"
+          href={"https://testnet.snowtrace.io/tx/" + submission.txHash}
+          rel="noopener noreferrer"
+        >
           {shortenAddress(submission.txHash)}
-        </span>
+        </a>
       </div>
       <div className="flex flex-col justify-center">
         <span className="text-center text-sm">Version</span>

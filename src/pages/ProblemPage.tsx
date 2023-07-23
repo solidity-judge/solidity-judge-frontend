@@ -269,7 +269,13 @@ function SubmitPanel({ code, problem }: { problem: Problem; code: string }) {
       );
 
       if (submitHash) {
-        console.log(data.hash);
+        // Get current timestamp
+        const timestamp = Math.floor(Date.now() / 1000);
+        if (timestamp > problem.deadline) {
+          setShowResult(false);
+          alert("Deadline passed");
+          return;
+        }
         sdk
           .declareSolutionHash(data.hash)
           .then((x) => x.wait())
@@ -324,13 +330,16 @@ function SubmitPanel({ code, problem }: { problem: Problem; code: string }) {
       )}
       {wallet ? (
         <>
-          <Button
-            className="text-sm"
-            fullWidth={true}
-            onClick={() => handleSubmit()}
-          >
-            Submit
-          </Button>
+          {!problem.deadline && (
+            <Button
+              className="text-sm"
+              fullWidth={true}
+              onClick={() => handleSubmit()}
+            >
+              Submit
+            </Button>
+          )}
+
           {problem.deadline && (
             <>
               <Button

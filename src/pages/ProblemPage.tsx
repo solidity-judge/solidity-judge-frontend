@@ -257,7 +257,7 @@ function SubmitPanel({ code, problem }: { problem: Problem; code: string }) {
     const signer = ethersProvider.getSigner();
     const userAddress = await signer.getAddress();
 
-    compileCode(code).then((data) => {
+    compileCode(code).then(async (data) => {
       const sdk = new ProblemSDK(
         {
           inputFormat: problem.inputFormat,
@@ -283,6 +283,25 @@ function SubmitPanel({ code, problem }: { problem: Problem; code: string }) {
             setShowResult(false);
           });
       } else {
+        // check hash
+        if (inContest) {
+          const shouldSubmit = await sdk.getContestantInfo().then((info) => {
+            if (info.solutionHash != data.hash) {
+              setShowResult(false);
+              alert(
+                "Hashes do not match.\nSubmitted hash: " +
+                  info.solutionHash +
+                  "\nYour current hash: " +
+                  data.hash
+              );
+              return false;
+            }
+            return true;
+          });
+
+          if (!shouldSubmit) return;
+        }
+
         sdk
           .submitAndRunSolution(data.bytecode, inContest)
           .then((x) => x.wait())

@@ -162,6 +162,7 @@ function TestPanel({ problem, code }: { problem: Problem; code: string }) {
   const [{ wallet }] = useConnectWallet();
   const inputs = useRef(problem.inputFormat.map(() => ""));
   const [outputs, setOutputs] = React.useState<string[]>([]);
+  const [gasUsed, setGasUsed] = React.useState(0);
 
   useEffect(() => {
     setOutputs(problem.outputFormat);
@@ -197,8 +198,9 @@ function TestPanel({ problem, code }: { problem: Problem; code: string }) {
 
       sdk
         .deployAndRunExample(inputs.current, data.bytecode)
-        .then(({ output }) => {
+        .then(({ output, gasUsed }) => {
           setOutputs(output);
+          setGasUsed(gasUsed);
         });
     });
   };
@@ -224,6 +226,10 @@ function TestPanel({ problem, code }: { problem: Problem; code: string }) {
             <Input type="text" placeholder={output} disabled={true} />
           </div>
         ))}
+        <div className="text-center text-sm font-medium">Gas used</div>
+        <div className="mb-2">
+          <Input type="text" placeholder={gasUsed.toString()} disabled={true} />
+        </div>
       </div>
       {wallet ? (
         <Button

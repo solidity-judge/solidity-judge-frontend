@@ -308,6 +308,8 @@ function SubmitPanel({ code, problem }: { problem: Problem; code: string }) {
           if (!shouldSubmit) return;
         }
 
+        setVerdict(null);
+
         sdk
           .submitAndRunSolution(data.bytecode, inContest)
           .then((x) => x.wait())
@@ -326,6 +328,12 @@ function SubmitPanel({ code, problem }: { problem: Problem; code: string }) {
           });
       }
     });
+  };
+
+  const verdictToText = {
+    0: "Accepted",
+    1: "Wrong Answer",
+    2: "Reverted",
   };
 
   return (
@@ -351,6 +359,20 @@ function SubmitPanel({ code, problem }: { problem: Problem; code: string }) {
               <div className="flex flex-col text-sm">Waiting result...</div>
             </div>
           )}
+        </div>
+      )}
+      {showResult && verdict && (
+        <div className="mt-3 flex flex-col gap-3">
+          {verdict.verdicts.map((verdict, index) => (
+            <div key={index}>
+              <span className="font-medium">Test {index}</span>:{" "}
+              {verdict == 0 ? (
+                <span className="text-green-500">Passed</span>
+              ) : (
+                <span className="text-red-500">{verdictToText[verdict]}</span>
+              )}
+            </div>
+          ))}
         </div>
       )}
       {wallet ? (

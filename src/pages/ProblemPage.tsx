@@ -284,7 +284,15 @@ function SubmitPanel({ code, problem }: { problem: Problem; code: string }) {
         }
         sdk
           .declareSolutionHash(data.hash)
-          .then((x) => x.wait())
+          .then(async (x) => {
+            while (true) {
+              const receipt = await ethersProvider.getTransactionReceipt(
+                x.hash
+              );
+              if (receipt) return;
+              await new Promise((resolve) => setTimeout(resolve, 1000));
+            }
+          })
           .then((_) => {
             setShowResult(false);
           });
@@ -312,15 +320,12 @@ function SubmitPanel({ code, problem }: { problem: Problem; code: string }) {
 
         sdk
           .submitAndRunSolution(data.bytecode, inContest)
-          .then((x) => x.wait())
           .then((result) => {
             console.log(result);
-            sdk
-              .parseSubmissionVerdict(result.transactionHash)
-              .then((verdict) => {
-                console.log(verdict);
-                setVerdict(verdict);
-              });
+            sdk.parseSubmissionVerdict(result.hash).then((verdict) => {
+              console.log(verdict);
+              setVerdict(verdict);
+            });
           })
           .catch((err) => {
             console.log(err);

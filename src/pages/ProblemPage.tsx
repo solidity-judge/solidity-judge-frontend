@@ -392,7 +392,7 @@ function SubmitPanel({ code, problem }: { problem: Problem; code: string }) {
             </Button>
           )}
 
-          {problem.deadline && (
+          {!!problem.deadline && (
             <>
               <Button
                 className="text-sm"
